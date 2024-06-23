@@ -1,6 +1,8 @@
 
 import {BrowserRouter as Router , Routes, Route} from 'react-router-dom'
 import {ChakraProvider} from '@chakra-ui/react'
+import { useState } from 'react';
+
 
 
 
@@ -9,8 +11,14 @@ import MLogin from './components/Login/MLogin';
 import MHome from './components/Home/MHome';
 import MUserProfile from './components/User/MUserProfile';
 
+//Admin Routes
+import MAdminLogin from './Admin/MAdminLogin';
+import MDashboard from './Admin/MDashboard';
+
 
 function App() {
+
+  const [isAdmin, setisAdmin] = useState(true);
 
   return (
     <ChakraProvider>
@@ -19,6 +27,11 @@ function App() {
           <Route path='/' element={<MHome/> }/>
           <Route path='/login' element={<MLogin/> }/>
           <Route path='/user' element={<MUserProfile/> }/>
+
+                 {/* for Admin dashboard */}
+          <Route path='/adminlogin' element={<MAdminLogin/> }/>
+          <Route path='/admindashboard' element={<MDashboard/> }/>
+
         </Routes>
       </Router>
       </ChakraProvider>
