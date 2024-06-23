@@ -52,6 +52,7 @@ svg{
     
 // }
 
-// export const BackwardArrow =()=>{
-//     <FaCircleArrowLeft />
-// }
+export const BackwardArrow =({onClick})=>{
+    return <FaCircleArrowLeft onClick={onClick} />
+
+}

@@ -18,6 +18,7 @@ import MDashboard from './Admin/MDashboard';
 //manage Data
 import TotalDrivers from './Admin/ManageData/TotalDrivers';
 import Attendance from './Admin/ManageData/Attendance';
+import DriverBranch from './Admin/ManageData/DriverBranch';
 
 
 function App() {
@@ -38,6 +39,8 @@ function App() {
           {/* Manage Data */}
           <Route path='/totaldrivers' element={<TotalDrivers/> }/>
           <Route path='/DriverAttendance' element={<Attendance/> }/>
+          <Route path='/DriverBranch' element={<DriverBranch/> }/>
+
 
 
 

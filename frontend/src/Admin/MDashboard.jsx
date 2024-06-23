@@ -21,6 +21,11 @@ const MDashboard = () => {
         e.preventDefault();
         navigate('/DriverAttendance');
      }
+
+     const DriverBranchHandler =(e)=>{
+        e.preventDefault();
+        navigate('/DriverBranch');
+     }
         
 
 
@@ -33,7 +38,7 @@ const MDashboard = () => {
         <Navigationbtns onclick={TotalDriversHandler} btn ="Total Drivers" btncolor="red" icons={<ImTruck />}
         />
         <Navigationbtns onclick={AttandenceHandler}  btn="Attendance" btncolor={"green"} icons={<FaCalendarDays />}/>
-        <Navigationbtns btn={"Driver Branch"} btncolor={"blue"} icons={<FaCodeBranch />} />
+        <Navigationbtns onclick={DriverBranchHandler}  btn={"Driver Branch"} btncolor={"blue"} icons={<FaCodeBranch />} />
         <Navigationbtns btn={"Add Driver"} btncolor={"yellow"} icons={<FcManager />}/>
     </DashboardConatiner>
   )
