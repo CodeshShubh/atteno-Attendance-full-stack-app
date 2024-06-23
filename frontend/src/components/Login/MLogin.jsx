@@ -4,9 +4,29 @@ import { FaGoogle } from "react-icons/fa";
 
 import loginImg from '../../assets/LoginImage.png'
 import { MainNavBarContainer, OrangeButton } from "../Home/MHome";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const MLogin = () => {
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [otp, setOtp] = useState("");
+
+
+  const handleNumberSubmit = (e) => {
+    e.preventDefault();
+    console.log("Mobile Number:", mobileNumber);
+    setIsOtpSent(true);
+  };
+
+  const handleOtpSubmit = (e) => {
+    e.preventDefault();
+    console.log("Entered OTP:", otp);
+    // Add any further logic for OTP submission here
+  };
+
+
+
+
   return (
     <LoginPageConatiner>
      <div className="TopHeading">
@@ -16,11 +36,22 @@ const MLogin = () => {
       <div className="loginImg">
         <img src={loginImg} alt="loginImg"/>
       </div>
-      <form>
+      <form onSubmit={isOtpSent ? handleOtpSubmit : handleNumberSubmit}>
         <h1>Enter Your Mobile Number</h1>
-        <input type="number" placeholder="Enter Number" />
+        {
+          isOtpSent ? 
+          <input onChange={(e)=>setOtp(e.target.value)} 
+          value={otp} 
+          type="number" 
+          placeholder="Enter OTP"
+          />   :  <input onChange={(e) => setMobileNumber(e.target.value)}
+          value={mobileNumber}
+          type="number" 
+          placeholder="Enter Number"
+          />  
+         }
          <p>Change Number?</p>
-        <LoginPageButton>Send OTP</LoginPageButton>
+        <LoginPageButton type="submit">{isOtpSent ? "Submit OTP" : "Send OTP"}</LoginPageButton>
       </form>
 
         <StyledHR/>

@@ -23,7 +23,7 @@ const MHome = () => {
 
       <div className='BottomContent'>
         <p>If you are Admin Click Here</p>
-        <Link to={'/'}>Login Here</Link>
+        <Link to={'/adminlogin'}>Login Here</Link>
       </div>
       
      
