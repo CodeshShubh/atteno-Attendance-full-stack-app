@@ -26,6 +26,13 @@ const MDashboard = () => {
         e.preventDefault();
         navigate('/DriverBranch');
      }
+     
+     const AddDriversHandler =(e)=>{
+        e.preventDefault();
+        navigate('/AddDrivers');
+     }
+
+     
         
 
 
@@ -39,7 +46,7 @@ const MDashboard = () => {
         />
         <Navigationbtns onclick={AttandenceHandler}  btn="Attendance" btncolor={"green"} icons={<FaCalendarDays />}/>
         <Navigationbtns onclick={DriverBranchHandler}  btn={"Driver Branch"} btncolor={"blue"} icons={<FaCodeBranch />} />
-        <Navigationbtns btn={"Add Driver"} btncolor={"yellow"} icons={<FcManager />}/>
+        <Navigationbtns onclick={AddDriversHandler}   btn={"Add Driver"} btncolor={"yellow"} icons={<FcManager />}/>
     </DashboardConatiner>
   )
 }
