@@ -15,6 +15,10 @@ import MUserProfile from './components/User/MUserProfile';
 import MAdminLogin from './Admin/MAdminLogin';
 import MDashboard from './Admin/MDashboard';
 
+//manage Data
+import TotalDrivers from './Admin/ManageData/TotalDrivers';
+import Attendance from './Admin/ManageData/Attendance';
+
 
 function App() {
 
@@ -31,6 +35,11 @@ function App() {
                  {/* for Admin dashboard */}
           <Route path='/adminlogin' element={<MAdminLogin/> }/>
           <Route path='/admindashboard' element={<MDashboard/> }/>
+          {/* Manage Data */}
+          <Route path='/totaldrivers' element={<TotalDrivers/> }/>
+          <Route path='/DriverAttendance' element={<Attendance/> }/>
+
+
 
         </Routes>
       </Router>

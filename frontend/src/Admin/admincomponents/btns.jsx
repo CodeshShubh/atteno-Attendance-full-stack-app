@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 import { OrangeButton } from '../../components/Home/MHome'
 import { IoIosArrowDropright } from "react-icons/io";
+import { FaCircleArrowLeft } from "react-icons/fa6";
 
 
 
 
-export const Navigationbtns =({btn, btncolor, icons})=>{
+export const Navigationbtns =({btn, btncolor, icons, onclick})=>{
     return(
-        <Navbtns btncolor={btncolor}>
+        <Navbtns onClick={onclick} btncolor={btncolor}>
              <div className='icons'>
             {icons}  
            <div className='namesvg'>     
@@ -43,3 +44,14 @@ svg{
 }
 
 `
+
+
+// for arrows
+
+// export const ForwardArrow =()=>{
+    
+// }
+
+// export const BackwardArrow =()=>{
+//     <FaCircleArrowLeft />
+// }

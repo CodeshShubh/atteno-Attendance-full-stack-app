@@ -5,20 +5,34 @@ import { ImTruck } from "react-icons/im";
 import { FaCalendarDays } from "react-icons/fa6";
 import { FaCodeBranch } from "react-icons/fa6";
 import { FcManager } from "react-icons/fc";
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 const MDashboard = () => {
+    const navigate = useNavigate();
+
+     const TotalDriversHandler =(e)=>{
+        e.preventDefault()
+        navigate('/totaldrivers')
+     }
+
+     const AttandenceHandler =(e)=>{
+        e.preventDefault();
+        navigate('/DriverAttendance');
+     }
+        
+
+
   return (
     <DashboardConatiner>
         <div className='top_Section'>
             <h1>Welcome , Shubhanshu </h1>
             <p>Select Button to Manage Driver's</p>
         </div>
-        <Navigationbtns btn ="Total Drivers" btncolor="red" icons={<ImTruck />}
+        <Navigationbtns onclick={TotalDriversHandler} btn ="Total Drivers" btncolor="red" icons={<ImTruck />}
         />
-        <Navigationbtns btn="Attendance" btncolor={"green"} icons={<FaCalendarDays />}/>
+        <Navigationbtns onclick={AttandenceHandler}  btn="Attendance" btncolor={"green"} icons={<FaCalendarDays />}/>
         <Navigationbtns btn={"Driver Branch"} btncolor={"blue"} icons={<FaCodeBranch />} />
         <Navigationbtns btn={"Add Driver"} btncolor={"yellow"} icons={<FcManager />}/>
     </DashboardConatiner>
