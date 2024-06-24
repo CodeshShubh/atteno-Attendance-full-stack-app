@@ -1,18 +1,20 @@
 import express from 'express';
+import { connectDB } from './utils/database.js';
 
 
 
 
-const app = express();
+
 
 const PORT = 4000;
 
 
 
+connectDB();
 
 
 
-
+const app = express();
 
 
 
