@@ -35,7 +35,7 @@ export default MHome;
 
 
 export const MainNavBarContainer = styled.div`
-max-width: 1440px;
+ max-width: 100%; /* Adjust to fit within the viewport */
 max-height: 844px;
 margin: 0 auto;
 background-color: #8C5CB3;

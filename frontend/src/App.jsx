@@ -34,6 +34,7 @@ function App() {
           <Route path='/login' element={<MLogin/> }/>
           <Route path='/user' element={<MUserProfile/> }/>
 
+
                  {/* for Admin dashboard */}
           <Route path='/adminlogin' element={<MAdminLogin/> }/>
           <Route path='/admindashboard' element={<MDashboard/> }/>
@@ -42,10 +43,6 @@ function App() {
           <Route path='/DriverAttendance' element={<Attendance/> }/>
           <Route path='/DriverBranch' element={<DriverBranch/> }/>
           <Route path='/AddDrivers' element={<AddDrivers/> }/>
-
-
-
-
 
         </Routes>
       </Router>
