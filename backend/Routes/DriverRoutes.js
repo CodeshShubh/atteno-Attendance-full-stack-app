@@ -1,5 +1,5 @@
 import express from 'express';
-import {  driverAttendance, getAllDriver, getDriver, newDriver } from '../Controllers/Driver.js';
+import {  driverAttendance, driverLogin, driverLogout, getAllDriver, getDriver, newDriver } from '../Controllers/Driver.js';
 
 
 const app = express.Router();
@@ -14,6 +14,16 @@ app.get('/getalldriver', getAllDriver); //
 
 // route -  api/v1/driver/getDriver/Id
 app.get('/getdriver/:driverId', getDriver);
+
+// route -  api/v1/driver/driverLogin
+app.post('/driverLogin', driverLogin);
+
+// route -  api/v1/driver/driverLogout
+app.delete('/driverLogout/:driverId', driverLogout);
+
+
+
+
 
 // route -  api/v1/driver/driverattendance/Id
 app.post('/driverattendance/:driverId', driverAttendance);

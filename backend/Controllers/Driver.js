@@ -68,6 +68,79 @@ export const getDriver = async (req, res) => {
 
 
 
+export const driverLogin = async(req,res)=>{
+       const {mobileNumber, DLnumber} = req.body;
+
+    try {
+        if (!mobileNumber || !DLnumber){
+            return res.status(400).json({
+                message : "Mobile number and Password required"
+            })
+           }
+    
+           // Find driver by DL
+           const driver = await Driver.findOne({DLnumber});
+    
+           if(!driver){
+            return res.status(404).json({
+                message: "Driver not found"
+            })
+           }
+
+           if(DLnumber !== driver.DLnumber ){
+            return res.status(400).json({
+                message: "Invalid credentials"
+            })
+           }
+                // Successful login, set cookie with driverId
+            res.status(200)
+            .cookie('driverId', driver._id.toString(), {
+            httpOnly: true,   // Cookie accessible only via HTTP (not JavaScript)
+            secure: true,     // Cookie sent only over HTTPS (secure connection)
+            maxAge: 2 * 30 * 24 * 60 * 60 * 1000,  // Cookie expires after 2 months (in milliseconds)
+            // other cookie options as needed
+            })
+            .json({ message: "Login successful", driver });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message:"Server error"})
+    }
+
+}
+
+
+export const driverLogout = async(req,res)=>{
+    const {driverId}=req.params;
+    try {
+     const deletedDriver = await Driver.findByIdAndDelete(driverId);
+
+     if(!deletedDriver){
+        return res.status(404).json({
+            message: "Driver not found"
+        })
+     }
+     res.status(200).json({
+        message: "Driver delete Successfully",
+        deletedDriver
+     })    
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Failed to delete driver",
+            error : error.message
+        })
+    }
+}
+
+
+
+
+
+
+
+
+
 export const driverAttendance = async (req, res) => {
     const { driverId } = req.params; // Extract driverId from URL parameters
     const { currentMonth, currentDay } = req.body; // Extract currentMonth and currentDay from request body
