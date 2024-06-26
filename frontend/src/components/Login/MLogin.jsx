@@ -5,7 +5,7 @@ import { MainNavBarContainer, OrangeButton } from "../Home/MHome";
 import { useState } from "react";
 import { useDriverloginMutation } from "../../redux/api/driverAPI";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector,} from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { setUser } from "../../redux/reducer/driverReducer";
 
 
@@ -23,7 +23,7 @@ const MLogin = () => {
             mobileNumber: UserId,
             DLnumber: Password
           }).unwrap();
-              dispatch(setUser(driverinfo.driver))
+              dispatch(setUser(driverinfo.driverLogin))
            navigate("/user")
           console.log('Login successful', driverinfo);
          } catch (error) {

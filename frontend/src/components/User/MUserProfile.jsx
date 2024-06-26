@@ -8,7 +8,8 @@ import { useSelector } from 'react-redux';
 
 const MUserProfile = () => {
 
-  const user = useSelector((state)=>state.driver.user);
+  const user = useSelector((state)=>state.driver.user); // this is for select user
+
 
 const [currentDate, setCurrentDate] = useState(dayjs());
   const daysInMonth = currentDate.daysInMonth();
@@ -29,8 +30,9 @@ const [currentDate, setCurrentDate] = useState(dayjs());
     }
   };
     console.log(presentDays);
+
   const handlePrevMonth = () => {
-    setCurrentDate(currentDate.subtract(1, 'month'));
+    setCurrentDate(currentDate.subtract(1, 'month')); 
   };
 
   const handleNextMonth = () => {

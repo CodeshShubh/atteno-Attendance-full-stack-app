@@ -30,10 +30,10 @@ export const newDriver = async(req, res)=>{
 
 export const getAllDriver = async (req, res) => {
     try {
-        const drivers = await Driver.find();
+        const getAllDrivers = await Driver.find();
         res.status(200).json({
             message: "All Drivers fetched successfully",
-            drivers: drivers
+            getalldrivers: getAllDrivers
         });
     } catch (error) {
         res.status(500).json({
@@ -48,15 +48,15 @@ export const getAllDriver = async (req, res) => {
 export const getDriver = async (req, res) => {
     const { driverId } = req.params; // Extracting driverId from URL parameters
     try {
-        const driver = await Driver.findById(driverId); // Find the driver by ID
-        if (!driver) {
+        const getDriver = await Driver.findById(driverId); // Find the driver by ID
+        if (!getDriver) {
             return res.status(404).json({
                 message: "Driver not found"
             });
         }
         res.status(200).json({
             message: "Driver fetched successfully",
-            driver: driver
+            getdriver: getDriver
         });
     } catch (error) {
         res.status(500).json({
@@ -79,28 +79,28 @@ export const driverLogin = async(req,res)=>{
            }
     
            // Find driver by DL
-           const driver = await Driver.findOne({DLnumber});
+           const driverLogin = await Driver.findOne({DLnumber});
     
-           if(!driver){
+           if(!driverLogin){
             return res.status(404).json({
                 message: "Driver not found"
             })
            }
 
-           if(DLnumber !== driver.DLnumber ){
+           if(DLnumber !== driverLogin.DLnumber ){
             return res.status(400).json({
                 message: "Invalid credentials"
             })
            }
                 // Successful login, set cookie with driverId
             res.status(200)
-            .cookie('driverId', driver._id.toString(), {
+            .cookie('driverId', driverLogin._id.toString(), {
             httpOnly: true,   // Cookie accessible only via HTTP (not JavaScript)
             secure: true,     // Cookie sent only over HTTPS (secure connection)
             maxAge: 2 * 30 * 24 * 60 * 60 * 1000,  // Cookie expires after 2 months (in milliseconds)
             // other cookie options as needed
             })
-            .json({ message: "Login successful", driver });
+            .json({ message: "Login successful", driverLogin });
         
     } catch (error) {
         console.error(error);
@@ -112,6 +112,7 @@ export const driverLogin = async(req,res)=>{
 
 export const driverLogout = async(req,res)=>{
     const {driverId}=req.params;
+
     try {
      const deletedDriver = await Driver.findByIdAndDelete(driverId);
 
@@ -134,10 +135,25 @@ export const driverLogout = async(req,res)=>{
 }
 
 
-
-
-
-
+export const fetchAttendance = async (req,res)=>{
+   const{driverId}= req.params;
+   try {
+    const driverAttendanceFetch = await Driver.findById(driverId)
+    
+    if(!driverAttendance){
+        return res.status(404).json({message:"Driver not found"});
+    }
+    res.status(200).json({
+        message:"Attendance fetched successfully",
+        attendance:driverAttendanceFetch.attendance
+    });
+   } catch (error) {
+     res.status(500).json({
+        message: "Failed to fetch attendance",
+        error: error.message
+     })
+   }
+}
 
 
 
@@ -184,5 +200,8 @@ export const driverAttendance = async (req, res) => {
         });
     }
 };
+
+
+
 
 

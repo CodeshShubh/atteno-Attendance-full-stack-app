@@ -25,8 +25,12 @@ app.delete('/driverLogout/:driverId', driverLogout);
 
 
 
-// route -  api/v1/driver/driverattendance/Id
-app.post('/driverattendance/:driverId', driverAttendance);
+// route -  api/v1/driver/add/attendance/Id
+app.post('/add/attendance/:driverId', driverAttendance);
+
+// route -  api/v1/driver/fetch/attendance/Id
+app.get('/fetch/attendance/:driverId', driverAttendance);
+
 
 
 

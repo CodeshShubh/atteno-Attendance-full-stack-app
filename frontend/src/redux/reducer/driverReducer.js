@@ -1,28 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    drivers: [],
-    loading: true,
-    user:null,
+    user:JSON.parse(localStorage.getItem('user')) || null,
+    loading: false,
+
 };
 
 export const driverReducer = createSlice({
     name: 'driverReducer',
     initialState,
     reducers: {
-        driverExist: (state, action) => {
-            state.loading = false;
-            state.drivers = action.payload;
-        },
-        driverNotExist: (state) => {
-            state.loading = false;
-            state.drivers = null;
+        setUserLoading:(state)=>{
+            state.loading = true;
+            state.error =null; 
         },
         setUser:(state,action)=>{
+            state.loading =false;
             state.user = action.payload;
+            localStorage.setItem('user', JSON.stringify(state.user));
+        },
+        setUserError:(state,action)=>{
+            state.loading=false;
+            state.error=action.payload;
         }
+
     },
 });
 
-export const { driverExist, driverNotExist, setUser } = driverReducer.actions;
+export const {
+       setUserLoading,
+        setUser,
+        setUserError } = driverReducer.actions;
 export default driverReducer.reducer;

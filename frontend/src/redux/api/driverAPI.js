@@ -20,9 +20,19 @@ export const driverAPI = createApi({
             }),
             transformErrorResponse:(response)=>response.data
         }),
+        // fetchAttendance: builder.query({
+        //     query: (driverId) => `/fetch/attendance/${driverId}`,
+        //   }),
+        //   markAttendance: builder.mutation({
+        //     query: ({ driverId, attendanceData }) => ({
+        //       url: `/add/attendance/${driverId}`,
+        //       method: 'POST',
+        //       body: attendanceData,
+        //     }),
+        //   }),
         // here we can add more endingn points
     })
 })
 
-export const  {useDriverloginMutation}= driverAPI;
+export const  {useDriverloginMutation, useFetchAttendanceQuery, useMarkAttendanceMutation}= driverAPI;
 export default useDriverloginMutation;
