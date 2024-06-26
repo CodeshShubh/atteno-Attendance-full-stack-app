@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import { MainNavBarContainer, OrangeButton } from '../Home/MHome';
 import { FaCircleArrowLeft,FaCircleArrowRight } from "react-icons/fa6";
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 
 const MUserProfile = () => {
+
+  const user = useSelector((state)=>state.driver.user);
 
 const [currentDate, setCurrentDate] = useState(dayjs());
   const daysInMonth = currentDate.daysInMonth();
@@ -39,10 +42,10 @@ const [currentDate, setCurrentDate] = useState(dayjs());
         <div className='userinfo'>
                 <h1>Driver Information</h1>
             <div>
-                <p><span>Name</span>: Ramesh</p>
-                <p><span>Vehicle</span>: DL1MB0972</p>
-                <p><span>Mobile</span>: 1234567890</p>
-                <p><span>Avaiblity </span>: Ramesh@gmail.com</p>
+                <p><span>Name</span>: {user.name}</p>
+                <p><span>Vehicle</span>: {user.vehicle}</p>
+                <p><span>Mobile</span>: {user.mobileNumber}</p>
+                <p><span>Branceh </span>: {user.branchName}</p>
             </div>
         </div>
          

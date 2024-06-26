@@ -1,12 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import driverAPI from './api/driverAPI'; // Correct the import path if necessary
-// import driverReducer from './reducer/driverReducer';
+import {configureStore} from '@reduxjs/toolkit';
+import { driverAPI } from './api/driverAPI';
+import driverReducer from './reducer/driverReducer';
+
+
 
 export const store = configureStore({
-    reducer: {
+    reducer:{
         [driverAPI.reducerPath]: driverAPI.reducer,
-        // driver: driverReducer,
+        driver: driverReducer,
     },
-    middleware: (getDefaultMiddleware) =>
+    middleware:(getDefaultMiddleware)=>
         getDefaultMiddleware().concat(driverAPI.middleware),
-});
+})
