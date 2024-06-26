@@ -30,7 +30,14 @@ const driverSchema = new Schema({
     type: String,
     required: true,
     trim: true
-  }
+  },
+    // Add an array field to store attendance data
+    attendance: [{
+      monthYear: { type: String, required: true },
+      presentDays: [{ type: Number, required: true }]
+    }]
+  
+
 }, { timestamps: true });
 
 // Create the User model

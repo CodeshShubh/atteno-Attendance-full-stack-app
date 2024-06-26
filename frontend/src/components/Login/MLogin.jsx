@@ -6,12 +6,8 @@ import { useState } from "react";
 
 
 const MLogin = () => {
-  const [Drivername, setDrivername] = useState("");
-  const [DriverMobileNumber, setDriverMobileNumber] = useState("");
-  const [vehicleNumber, vehicleNumberset] = useState("");
-  const [Driveremail, setDriveremail] = useState("");
-
-
+  const [UserId, setUserId] = useState("");
+  const [Password, setPassword] = useState("");
 
  
 
@@ -32,25 +28,15 @@ const MLogin = () => {
         <img src={loginImg} alt="loginImg" />
       </div>
       <form onSubmit={LoginHandler}>
-        <input onChange={(e) => setDrivername(e.target.value)}
-              value={Drivername}
-              type="tel"
-              placeholder="Enter Name"
+        <input onChange={(e) => setUserId(e.target.value)}
+              value={UserId}
+              type="txt"
+              placeholder="User Id"
             />
-            <input onChange={(e) => setDriverMobileNumber(e.target.value)}
-              value={DriverMobileNumber}
-              type="tel"
-              placeholder="Enter Number"
-            />
-            <input onChange={(e) => vehicleNumberset(e.target.value)}
-              value={vehicleNumber}
-              type="text"
-              placeholder="Vehicle Number"
-            />
-            <input onChange={(e) => setDriveremail(e.target.value)}
-              value={Driveremail}
-              type="tel"
-              placeholder="Enter Email"
+            <input onChange={(e) => setPassword(e.target.value)}
+              value={Password}
+              type="password"
+              placeholder="Enter Password"
             />
         <LoginPageButton type="submit">Login</LoginPageButton>
       </form>
@@ -59,7 +45,7 @@ const MLogin = () => {
         <p>Or Login with</p>
       </div>
       <LoginPageButton $primary>
-        <FaGoogle /> Google
+        <FaGoogle/> Gmail
       </LoginPageButton>
     </LoginPageContainer>
   );
@@ -73,6 +59,7 @@ const LoginPageContainer = styled(MainNavBarContainer)`
   overflow: hidden;
   .TopHeading {
     text-align: center;
+    margin-top: 2rem;
     > h1 {
       font-weight: bolder;
       font-size: 2rem;
@@ -84,13 +71,14 @@ const LoginPageContainer = styled(MainNavBarContainer)`
   }
 
   .loginImg {
-
+   margin-top: 2rem;
     display: flex;
     justify-content: center;
     padding: 0.5rem;
     > img {
-      width: 13rem;
-      height: 13rem;
+      width: 17rem;
+      height: 17rem;
+      
     }
   }
 
@@ -105,8 +93,9 @@ const LoginPageContainer = styled(MainNavBarContainer)`
       width: 95%;
       padding: 0.5rem;
       border-radius: 10px;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       background-color: white;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
       &::placeholder {
         font-weight: 700;
       }
@@ -123,9 +112,10 @@ const LoginPageContainer = styled(MainNavBarContainer)`
 `;
 
 const LoginPageButton = styled(OrangeButton)`
-  width: 95%;
+  width: 96%;
   background-color: ${(props) => props.$primary ? "whitesmoke" : "default"};
   border: ${(props) => props.$primary ? "1px solid black" : "default"};
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 `;
 
 const StyledHR = styled.hr`

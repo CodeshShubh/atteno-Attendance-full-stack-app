@@ -1,5 +1,5 @@
 import express from 'express';
-import { newDriver } from '../Controllers/Driver.js';
+import {  driverAttendance, getAllDriver, getDriver, newDriver } from '../Controllers/Driver.js';
 
 
 const app = express.Router();
@@ -7,7 +7,23 @@ const app = express.Router();
 
 
   // route -  api/v1/driver/newdriver
-app.post('/newdriver', newDriver);
+app.post('/newdriver', newDriver); //
+
+// route -  api/v1/driver/getAllDriver
+app.get('/getalldriver', getAllDriver); //
+
+// route -  api/v1/driver/getDriver/Id
+app.get('/getdriver/:driverId', getDriver);
+
+// route -  api/v1/driver/driverattendance/Id
+app.post('/driverattendance/:driverId', driverAttendance);
+
+
+
+
+
+
+
 
 
 export default app;

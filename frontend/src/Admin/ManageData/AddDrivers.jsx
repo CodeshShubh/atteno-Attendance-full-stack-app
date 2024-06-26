@@ -14,6 +14,8 @@ const AddDrivers = () => {
           <input type="text" name="branch" placeholder="Branch Name" />
           <input type="text" name="driver" placeholder="Driver Name" />
           <input type="text" name="vehicle" placeholder="Vehicle Number" />
+          <input type="tel" name="mobile" placeholder="Mobile Name" />
+          <input type="number" name="dl" placeholder="Last 4 digit of DL" />
           <OrangeButton>Add Drivers</OrangeButton>
       </form>
      </div>
@@ -33,7 +35,7 @@ const AddDriversConatiner = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin: 6rem 0;
+  margin: 3rem 0;
   >h1{
     font-weight: bolder;
     font-size: 2rem;
@@ -44,12 +46,10 @@ const AddDriversConatiner = styled.div`
  }
 
  .form_Container{
-  background-color: whitesmoke;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   >form{
     display: flex;
     flex-direction: column;
@@ -58,6 +58,8 @@ const AddDriversConatiner = styled.div`
     margin-top:2rem ;
     >input{
       padding: 1rem;
+      background-color: whitesmoke;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     }
   }
  }

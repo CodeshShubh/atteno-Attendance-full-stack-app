@@ -18,12 +18,14 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   const handleMarkPresent = () => {
     const currentDay = currentDate.date();
     const currentMonth = currentDate.format('YYYY-MM');
-    setPresentDays({
-      ...presentDays,
-      [currentMonth]: [...(presentDays[currentMonth] || []), currentDay],
-    });
+    if (!(presentDays[currentMonth]?.includes(currentDay))) {
+      setPresentDays({
+        ...presentDays,
+        [currentMonth]: [...(presentDays[currentMonth] || []), currentDay],
+      });
+    }
   };
-
+    console.log(presentDays);
   const handlePrevMonth = () => {
     setCurrentDate(currentDate.subtract(1, 'month'));
   };
@@ -40,7 +42,7 @@ const [currentDate, setCurrentDate] = useState(dayjs());
                 <p><span>Name</span>: Ramesh</p>
                 <p><span>Vehicle</span>: DL1MB0972</p>
                 <p><span>Mobile</span>: 1234567890</p>
-                <p><span>Email </span>: Ramesh@gmail.com</p>
+                <p><span>Avaiblity </span>: Ramesh@gmail.com</p>
             </div>
         </div>
          

@@ -59,6 +59,7 @@ margin-top: 3rem;
   background-color: #FE6F23;
   padding: 0.5rem;
   border-radius: 5px 20px 20px 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 
 }
 
@@ -117,4 +118,5 @@ align-items: center;
   font-size: larger;
   font-weight: bolder;
   padding: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 `
