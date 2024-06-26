@@ -1,5 +1,6 @@
 import express from 'express';
 import { connectDB } from './utils/database.js';
+import cors from 'cors'
 
 
 
@@ -17,6 +18,11 @@ connectDB();
 const app = express();
 
 app.use(express.json());
+app.use(cors({
+    origin: 'http://localhost:5173', // Your frontend URL
+  credentials: true,
+
+}));
 
 app.use('/api/v1/driver', driverRoute);
 

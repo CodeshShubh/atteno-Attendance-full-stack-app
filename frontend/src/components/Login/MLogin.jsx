@@ -3,19 +3,30 @@ import { FaGoogle } from "react-icons/fa";
 import loginImg from '../../assets/LoginImage.png';
 import { MainNavBarContainer, OrangeButton } from "../Home/MHome";
 import { useState } from "react";
-
+import { useDriverLoginMutation } from "../../redux/api/driverAPI";
+import { useNavigate } from "react-router-dom";
 
 const MLogin = () => {
   const [UserId, setUserId] = useState("");
   const [Password, setPassword] = useState("");
+  const navigate = useNavigate();
 
+ const [driverLogin, {isLoading, error }] = useDriverLoginMutation();
  
 
   const LoginHandler = async (e) => {
     e.preventDefault();
-
+         try {
+          const driverinfo = await driverLogin({
+            mobileNumber: UserId,
+            DLnumber: Password
+          }).unwrap();
+           navigate("/user")
+          console.log('Login successful', driverinfo);
+         } catch (error) {
+           console.log('Failed to login', err);
+         }
   };
-
 
 
   return (
@@ -39,6 +50,7 @@ const MLogin = () => {
               placeholder="Enter Password"
             />
         <LoginPageButton type="submit">Login</LoginPageButton>
+        {error && <p style={{ color: 'red' }}>{error.data?.message || 'Login failed'}</p>}
       </form>
       <StyledHR />
       <div className="hrtext">
