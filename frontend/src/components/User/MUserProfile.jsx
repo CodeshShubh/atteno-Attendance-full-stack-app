@@ -44,10 +44,10 @@ const [currentDate, setCurrentDate] = useState(dayjs());
         <div className='userinfo'>
                 <h1>Driver Information</h1>
             <div>
-                <p><span>Name</span>: {user.name}</p>
-                <p><span>Vehicle</span>: {user.vehicle}</p>
-                <p><span>Mobile</span>: {user.mobileNumber}</p>
-                <p><span>Branceh </span>: {user.branchName}</p>
+                <p><span>Name</span>: {user.name || "NA"}</p>
+                <p><span>Vehicle</span>: {user.vehicle || "NA"}</p>
+                <p><span>Mobile</span>: {user.mobileNumber || "NA"}</p>
+                <p><span>Branceh </span>: {user.branchName || "NA"}</p>
             </div>
         </div>
          

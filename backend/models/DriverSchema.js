@@ -6,7 +6,7 @@ const { Schema, model } = mongoose;
 const driverSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Please enter name"],
     trim: true
   },
   vehicle: {

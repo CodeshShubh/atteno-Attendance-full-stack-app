@@ -1,10 +1,7 @@
 
 import {BrowserRouter as Router , Routes, Route} from 'react-router-dom'
 import {ChakraProvider} from '@chakra-ui/react'
-import { useState } from 'react';
-
-
-
+import { useEffect, useState } from 'react';
 
 import './App.css'
 import MLogin from './components/Login/MLogin';
@@ -20,11 +17,24 @@ import TotalDrivers from './Admin/ManageData/TotalDrivers';
 import Attendance from './Admin/ManageData/Attendance';
 import DriverBranch from './Admin/ManageData/DriverBranch';
 import AddDrivers from './Admin/ManageData/AddDrivers';
+import { useSelector } from 'react-redux';
 
 
 function App() {
 
-  const [isAdmin, setisAdmin] = useState(true);
+  const [isDriverLogin, setIsDriverLogin] = useState(false);
+     const user =(useSelector(state=>state.driver.user) || null)
+    
+     useEffect(() => {
+      if (user._id !==null) {
+        setIsDriverLogin(true);
+      } else {
+        setIsDriverLogin(false);
+      }
+    }, [user]);
+
+    console.log(isDriverLogin);
+  
 
   return (
     <ChakraProvider>
@@ -50,4 +60,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
