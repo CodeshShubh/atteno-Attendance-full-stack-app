@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    user:JSON.parse(localStorage.getItem('user')) || null,
+    user: null,
     loading: false,
     error: null,
     isAuthenticated:false,
@@ -12,25 +12,30 @@ export const driverReducer = createSlice({
     name: 'driverReducer',
     initialState,
     reducers: {
-        setUserLoading:(state)=>{
+        loginRequest:(state)=>{
             state.loading = true;
             state.isAuthenticated=false;
             state.error =null; 
         },
-        setUser:(state,action)=>{
+        loginSuccess:(state,action)=>{
             state.loading =false;
             state.isAuthenticated=true;
-            state.user = action.payload;
-            state.message=action.payload.message
-            localStorage.setItem('user', JSON.stringify(state.user));
+            state.user = action.payload.data;
+            state.message=action.payload.message;
         },
-        setUserError:(state,action)=>{
+        loginFail:(state,action)=>{
             state.loading=false;
             state.isAuthenticated=false
-            state.error=action.payload;
-        }
+            state.error=action.payload.message;
+        },
+        clearError: state => {
+            state.error = null;
+          },
+          clearMessage: state => {
+            state.message = null;
+          },
     },
 });
 
-export const { setUserLoading, setUser, setUserError } = driverReducer.actions;
+export const { loginRequest, loginSuccess, loginFail, clearError, clearMessage } = driverReducer.actions;
 export default driverReducer.reducer;

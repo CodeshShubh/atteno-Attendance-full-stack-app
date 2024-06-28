@@ -1,14 +1,16 @@
 import {configureStore} from '@reduxjs/toolkit';
-import { driverAPI } from './api/driverAPI';
 import driverReducer from './reducer/driverReducer';
 
 
 
 export const store = configureStore({
     reducer:{
-        [driverAPI.reducerPath]: driverAPI.reducer,
         driver: driverReducer,
     },
-    middleware:(getDefaultMiddleware)=>
-        getDefaultMiddleware().concat(driverAPI.middleware),
-})
+
+});
+
+export default store;
+
+
+export const server = "http://localhost:4000/api/v1";

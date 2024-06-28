@@ -1,9 +1,9 @@
 // ProtectedRoute.jsx
 import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRoute = ({ isDriverLogin, children, redirectTo = '/' }) => {
+const ProtectedRoute = ({ isAuthenticated, children, redirectTo = '/' }) => {
 
-  if (isDriverLogin=false) {
+  if (!isAuthenticated) {
     return <Navigate to={redirectTo} />;
   }
 

@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 const MUserProfile = () => {
 
-  const user = useSelector((state)=>state.driver.user); // this is for select user
+  const user = useSelector((state)=>state.driver.user.newDriver); // this is for select user
 
 
 const [currentDate, setCurrentDate] = useState(dayjs());
@@ -38,16 +38,16 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   const handleNextMonth = () => {
     setCurrentDate(currentDate.add(1, 'month'));
   };
-
+ 
   return (
     <UserProfileConatiner>
         <div className='userinfo'>
                 <h1>Driver Information</h1>
             <div>
-                <p><span>Name</span>: {user.name || "NA"}</p>
-                <p><span>Vehicle</span>: {user.vehicle || "NA"}</p>
-                <p><span>Mobile</span>: {user.mobileNumber || "NA"}</p>
-                <p><span>Branceh </span>: {user.branchName || "NA"}</p>
+                <p><span>Name</span>: { user? user.name : "NA"}</p>
+                <p><span>Vehicle</span>: {user? user.vehicle : "NA"}</p>
+                <p><span>Mobile</span>: {user? user.mobileNumber : "NA"}</p>
+                <p><span>Branceh </span>: {user? user.branchName : "NA"}</p>
             </div>
         </div>
          

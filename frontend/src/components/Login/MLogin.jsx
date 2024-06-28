@@ -3,32 +3,20 @@ import { FaGoogle } from "react-icons/fa";
 import loginImg from '../../assets/LoginImage.png';
 import { MainNavBarContainer, OrangeButton } from "../Home/MHome";
 import { useState } from "react";
-import { useDriverloginMutation } from "../../redux/api/driverAPI";
+import { login } from "../../redux/actions/driverAction";
 import { useNavigate } from "react-router-dom";
 import { useDispatch} from 'react-redux';
-import { setUserLoading, setUser, setUserError } from "../../redux/reducer/driverReducer";
-
 
 const MLogin = () => {
   const [UserId, setUserId] = useState("");
   const [Password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
- const [driverlogin, { error }] = useDriverloginMutation();
 
   const LoginHandler = async (e) => {
-    e.preventDefault();
-         try {
-          const driverinfo = await driverlogin({
-            mobileNumber: UserId,
-            DLnumber: Password
-          }).unwrap();
-              dispatch(setUser(driverinfo.driverLogin))
-           navigate("/user")
-          console.log('Login successful', driverinfo);
-         } catch (error) {
-           console.log('Failed to login', err);
-         }
+    e.preventDefault(); 
+        dispatch(login({mobileNumber:UserId, DLnumber:Password}));
+        navigate("/user")
   };
 
 
@@ -52,8 +40,11 @@ const MLogin = () => {
               type="password"
               placeholder="Enter Password"
             />
-        <LoginPageButton type="submit">Login</LoginPageButton>
-        {error && <p style={{ color: 'red' }}>{error.data?.message || 'Login failed'}</p>}
+        <LoginPageButton type="submit">
+          {/* {loading ? 'Logging in...' :  "Login"} */}
+          Login
+          </LoginPageButton>
+        {/* {error && <p style={{ color: 'red' }}>{error.data?.message || 'Login failed'}</p>} */}
       </form>
       <StyledHR />
       <div className="hrtext">

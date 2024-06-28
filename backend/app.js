@@ -1,28 +1,39 @@
 import express from 'express';
 import { connectDB } from './utils/database.js';
 import cors from 'cors'
-
+import ErrorMiddleware from './middlewares/Error.js';
 
 
 import driverRoute from './Routes/DriverRoutes.js'
+import cookieParser from 'cookie-parser';
+import { config } from 'dotenv';
 
+config({
+  path: "./config/config.env",
+})
+const app = express();
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
-
-
+// call MongoDb function for main app
 connectDB();
 
 
 
-const app = express();
+
 
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:5173', // Your frontend URL
   credentials: true,
-
 }));
+app.use(express.urlencoded({
+  extended: true,
+  })
+);
+app.use(cookieParser());
+
+
 
 app.use('/api/v1/driver', driverRoute);
 
@@ -35,3 +46,5 @@ app.get("/", (req, res)=>{
 app.listen(PORT, ()=>{
     console.log(`Server is Working on PORT : ${PORT}`)
 })
+
+app.use(ErrorMiddleware);

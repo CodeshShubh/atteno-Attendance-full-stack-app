@@ -1,32 +1,28 @@
+import { catchAsyncErrror } from "../middlewares/catchAsyncError.js";
+import ErrorHandler from "../middlewares/errorHandler.js";
 import Driver from "../models/DriverSchema.js";
+import { sendToken } from "../utils/sendToken.js";
 
-export const newDriver = async(req, res)=>{
-      const {name, vehicle, mobileNumber, DLnumber, branchName   } = req.body; 
-      try {
-        if(!name || !vehicle || !mobileNumber || !DLnumber || !branchName){
-            return res.status(400).json({
-                message : "Please Enter All Fild"
-            })
-        }
-       const newDriver = new Driver({
-        name, 
-        vehicle, 
-        mobileNumber, 
-        DLnumber, 
-        branchName
-       })
-       await newDriver.save();
-       res.status(201).json({
-          message : "New Driver Register Successfully",
-          driver : newDriver
-       })
-      } catch (error) {
-         res.status(500).json({
-          message : "New Driver not Register ",
-          Error : error
-         })
-      }
-}
+export const newDriver = catchAsyncErrror(async(req, res, next)=>{
+    const {name, vehicle, mobileNumber, DLnumber, branchName   } = req.body; 
+    
+      if(!name || !vehicle || !mobileNumber || !DLnumber || !branchName)
+        return next(new ErrorHandler("Please Enter All Fild", 400));
+
+          let user = await Driver.findOne({mobileNumber});
+
+          if(user) return next(new ErrorHandler("Driver Already Exist", 409));
+
+     const newDriver = await Driver.create({
+      name, 
+      vehicle, 
+      mobileNumber, 
+      DLnumber, 
+      branchName
+     })
+     await newDriver.save();
+     sendToken(res, newDriver , "New Driver Created", 201); 
+});
 
 export const getAllDriver = async (req, res) => {
     try {
@@ -68,46 +64,23 @@ export const getDriver = async (req, res) => {
 
 
 
-export const driverLogin = async(req,res)=>{
-       const {mobileNumber, DLnumber} = req.body;
+export const driverLogin = catchAsyncErrror(async(req,res,next)=>{
+    const {mobileNumber, DLnumber} = req.body;
 
-    try {
-        if (!mobileNumber || !DLnumber){
-            return res.status(400).json({
-                message : "Mobile number and Password required"
-            })
-           }
-    
-           // Find driver by DL
-           const driverLogin = await Driver.findOne({DLnumber});
-    
-           if(!driverLogin){
-            return res.status(404).json({
-                message: "Driver not found"
-            })
-           }
+     if (!mobileNumber || !DLnumber)
+         return next(new ErrorHandler("Mobile number and Password required",400))
+         
+        // Find driver by DL
+        const user = await Driver.findOne({mobileNumber}).select("+DLnumber");
+ 
+        if(!user) return next(new ErrorHandler("Incorrect UserId or Password", 401))
+         
+        const isMatch = await user.compareDLnumber(DLnumber);
 
-           if(DLnumber !== driverLogin.DLnumber ){
-            return res.status(400).json({
-                message: "Invalid credentials"
-            })
-           }
-                // Successful login, set cookie with driverId
-            res.status(200)
-            .cookie('driverId', driverLogin._id.toString(), {
-            httpOnly: true,   // Cookie accessible only via HTTP (not JavaScript)
-            secure: true,     // Cookie sent only over HTTPS (secure connection)
-            maxAge: 2 * 30 * 24 * 60 * 60 * 1000,  // Cookie expires after 2 months (in milliseconds)
-            // other cookie options as needed
-            })
-            .json({ message: "Login successful", driverLogin });
-        
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({message:"Server error"})
-    }
-
-}
+        if(!isMatch)
+            return next(new ErrorHandler("Incorrect UserId or Password", 401))
+      sendToken(res, user, `Welcome back, ${user.name}`, 200);
+})
 
 
 export const driverLogout = async(req,res)=>{
