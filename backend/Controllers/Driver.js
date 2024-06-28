@@ -24,43 +24,17 @@ export const newDriver = catchAsyncErrror(async(req, res, next)=>{
      sendToken(res, newDriver , "New Driver Created", 201); 
 });
 
-export const getAllDriver = async (req, res) => {
-    try {
-        const getAllDrivers = await Driver.find();
-        res.status(200).json({
-            message: "All Drivers fetched successfully",
-            getalldrivers: getAllDrivers
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to fetch drivers",
-            Error: error
-        });
+export const getDriverProfile = catchAsyncErrror(async (req, res, next) => {
+    const  driver  = await Driver.findById(req.user._id); // Extracting driverId from URL parameters
+    if (!driver) {
+        return next(new ErrorHandler("Driver not found", 404));
     }
-};
-
-
-
-export const getDriver = async (req, res) => {
-    const { driverId } = req.params; // Extracting driverId from URL parameters
-    try {
-        const getDriver = await Driver.findById(driverId); // Find the driver by ID
-        if (!getDriver) {
-            return res.status(404).json({
-                message: "Driver not found"
-            });
-        }
-        res.status(200).json({
-            message: "Driver fetched successfully",
-            getdriver: getDriver
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to fetch driver",
-            error: error
-        });
-    }
-};
+    res.status(200).json({
+        success:true,
+        driver,
+    })
+     
+});
 
 
 
@@ -80,99 +54,117 @@ export const driverLogin = catchAsyncErrror(async(req,res,next)=>{
         if(!isMatch)
             return next(new ErrorHandler("Incorrect UserId or Password", 401))
       sendToken(res, user, `Welcome back, ${user.name}`, 200);
-})
+});
 
 
-export const driverLogout = async(req,res)=>{
-    const {driverId}=req.params;
-
-    try {
-     const deletedDriver = await Driver.findByIdAndDelete(driverId);
-
-     if(!deletedDriver){
-        return res.status(404).json({
-            message: "Driver not found"
-        })
-     }
-     res.status(200).json({
-        message: "Driver delete Successfully",
-        deletedDriver
-     })    
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: "Failed to delete driver",
-            error : error.message
-        })
-    }
-}
 
 
-export const fetchAttendance = async (req,res)=>{
-   const{driverId}= req.params;
-   try {
-    const driverAttendanceFetch = await Driver.findById(driverId)
+// export const getAllDriver = async (req, res) => {
+//     try {
+//         const getAllDrivers = await Driver.find();
+//         res.status(200).json({
+//             message: "All Drivers fetched successfully",
+//             getalldrivers: getAllDrivers
+//         });
+//     } catch (error) {
+//         res.status(500).json({
+//             message: "Failed to fetch drivers",
+//             Error: error
+//         });
+//     }
+// };
+
+
+// export const driverLogout = async(req,res)=>{
+//     const {driverId}=req.params;
+
+//     try {
+//      const deletedDriver = await Driver.findByIdAndDelete(driverId);
+
+//      if(!deletedDriver){
+//         return res.status(404).json({
+//             message: "Driver not found"
+//         })
+//      }
+//      res.status(200).json({
+//         message: "Driver delete Successfully",
+//         deletedDriver
+//      })    
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             message: "Failed to delete driver",
+//             error : error.message
+//         })
+//     }
+// }
+
+
+// export const fetchAttendance = async (req,res)=>{
+//    const{driverId}= req.params;
+//    try {
+//     const driverAttendanceFetch = await Driver.findById(driverId)
     
-    if(!driverAttendance){
-        return res.status(404).json({message:"Driver not found"});
-    }
-    res.status(200).json({
-        message:"Attendance fetched successfully",
-        attendance:driverAttendanceFetch.attendance
-    });
-   } catch (error) {
-     res.status(500).json({
-        message: "Failed to fetch attendance",
-        error: error.message
-     })
-   }
-}
+//     if(!driverAttendance){
+//         return res.status(404).json({message:"Driver not found"});
+//     }
+//     res.status(200).json({
+//         message:"Attendance fetched successfully",
+//         attendance:driverAttendanceFetch.attendance
+//     });
+//    } catch (error) {
+//      res.status(500).json({
+//         message: "Failed to fetch attendance",
+//         error: error.message
+//      })
+//    }
+// }
 
 
 
-export const driverAttendance = async (req, res) => {
-    const { driverId } = req.params; // Extract driverId from URL parameters
-    const { currentMonth, currentDay } = req.body; // Extract currentMonth and currentDay from request body
+// export const driverAttendance = async (req, res) => {
+//     const { driverId } = req.params; // Extract driverId from URL parameters
+//     const { currentMonth, currentDay } = req.body; // Extract currentMonth and currentDay from request body
 
-    try {
-        // Find the driver by ID
-        const driver = await Driver.findById(driverId);
-        if (!driver) {
-            return res.status(404).json({
-                message: "Driver not found"
-            });
-        }
+//     try {
+//         // Find the driver by ID
+//         const driver = await Driver.findById(driverId);
+//         if (!driver) {
+//             return res.status(404).json({
+//                 message: "Driver not found"
+//             });
+//         }
 
-        // Find the attendance record for the current month
-        let attendanceRecord = driver.attendance.find(record => record.monthYear === currentMonth);
+//         // Find the attendance record for the current month
+//         let attendanceRecord = driver.attendance.find(record => record.monthYear === currentMonth);
         
-        if (attendanceRecord) {
-            // If the record exists, add the current day to presentDays if it's not already there
-            if (!attendanceRecord.presentDays.includes(currentDay)) {
-                attendanceRecord.presentDays.push(currentDay);
-            }
-        } else {
-            // If the record doesn't exist, create a new one
-            driver.attendance.push({
-                monthYear: currentMonth,
-                presentDays: [currentDay]
-            });
-        }
+//         if (attendanceRecord) {
+//             // If the record exists, add the current day to presentDays if it's not already there
+//             if (!attendanceRecord.presentDays.includes(currentDay)) {
+//                 attendanceRecord.presentDays.push(currentDay);
+//             }
+//         } else {
+//             // If the record doesn't exist, create a new one
+//             driver.attendance.push({
+//                 monthYear: currentMonth,
+//                 presentDays: [currentDay]
+//             });
+//         }
 
-        // Save the updated driver document
-        await driver.save();
+//         // Save the updated driver document
+//         await driver.save();
 
-        res.status(200).json({
-            message: "Attendance updated successfully",
-            driver: driver
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to update attendance",
-            error: error.message
-        });
-    }
-};
+//         res.status(200).json({
+//             message: "Attendance updated successfully",
+//             driver: driver
+//         });
+//     } catch (error) {
+//         res.status(500).json({
+//             message: "Failed to update attendance",
+//             error: error.message
+//         });
+//     }
+// };
 
 
 

@@ -14,8 +14,6 @@ export const driverReducer = createSlice({
     reducers: {
         loginRequest:(state)=>{
             state.loading = true;
-            state.isAuthenticated=false;
-            state.error =null; 
         },
         loginSuccess:(state,action)=>{
             state.loading =false;
@@ -26,7 +24,21 @@ export const driverReducer = createSlice({
         loginFail:(state,action)=>{
             state.loading=false;
             state.isAuthenticated=false
-            state.error=action.payload.message;
+            state.error=action.payload
+        },
+        loadUserRequest:(state)=>{
+            state.loading = true;
+           
+        },
+        loadUserSuccess:(state,action)=>{
+            state.loading =false;
+            state.isAuthenticated=true;
+            state.user = action.payload;
+        },
+        loadUserFail:(state,action)=>{
+            state.loading=false;
+            state.isAuthenticated=false
+            state.error=action.payload;
         },
         clearError: state => {
             state.error = null;

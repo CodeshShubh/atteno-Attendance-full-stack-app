@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-import { catchAsyncErrror } from "./catchAsyncError";
-import ErrorHandler from "./errorHandler";
+import { catchAsyncErrror } from "./catchAsyncError.js";
+import ErrorHandler from "./errorHandler.js";
+import Driver from "../models/DriverSchema.js";
 
 
 export const isAuthenticated = catchAsyncErrror(async(req, res, next)=>{
@@ -10,6 +11,6 @@ export const isAuthenticated = catchAsyncErrror(async(req, res, next)=>{
 
    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-   req.user = await User.findById(decoded._id);
+   req.user = await Driver.findById(decoded._id);
    next();
-})
+});
