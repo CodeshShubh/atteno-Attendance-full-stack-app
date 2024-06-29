@@ -7,16 +7,11 @@ import { useSelector } from 'react-redux';
 
 
 const MUserProfile = () => {
-
-  const user = useSelector((state)=>state.driver.user.newDriver); // this is for select user
-
-
 const [currentDate, setCurrentDate] = useState(dayjs());
   const daysInMonth = currentDate.daysInMonth();
   const currentMonthYear = currentDate.format('DD-MMM-YYYY');
   const startDayOfWeek = currentDate.startOf('month').day();
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
 
   const [presentDays, setPresentDays] = useState({});
   const handleMarkPresent = () => {
@@ -29,7 +24,7 @@ const [currentDate, setCurrentDate] = useState(dayjs());
       });
     }
   };
-    console.log(presentDays);
+    // console.log(presentDays);
 
   const handlePrevMonth = () => {
     setCurrentDate(currentDate.subtract(1, 'month')); 
@@ -38,16 +33,23 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   const handleNextMonth = () => {
     setCurrentDate(currentDate.add(1, 'month'));
   };
- 
+ const userData = {
+  name: "kdjfk",
+  vehicle: 'kdsjfk',
+  mobileNumber: 'kdjsfksd',
+  branchName: 'kdjhfjksdhf'
+ }
+ const {user, loading, message} = useSelector((state)=>state.driver)
+ const data = user.driver
   return (
     <UserProfileConatiner>
         <div className='userinfo'>
                 <h1>Driver Information</h1>
             <div>
-                <p><span>Name</span>: { user? user.name : "NA"}</p>
-                <p><span>Vehicle</span>: {user? user.vehicle : "NA"}</p>
-                <p><span>Mobile</span>: {user? user.mobileNumber : "NA"}</p>
-                <p><span>Branceh </span>: {user? user.branchName : "NA"}</p>
+                <p><span>Name</span>: { user? data.name : "NA"}</p>
+                <p><span>Vehicle</span>: {user? data.vehicle : "NA"}</p>
+                <p><span>Mobile</span>: {user? data.mobileNumber : "NA"}</p>
+                <p><span>Branceh </span>: {user? data.branchName : "NA"}</p>
             </div>
         </div>
          

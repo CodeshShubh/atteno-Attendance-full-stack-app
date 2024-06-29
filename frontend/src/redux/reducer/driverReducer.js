@@ -2,52 +2,40 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     user: null,
+    isAuthenticated:false,
     loading: false,
     error: null,
-    isAuthenticated:false,
-    message:null
+    message:null,
+    
 };
 
 export const driverReducer = createSlice({
-    name: 'driverReducer',
+    name: 'driver',
     initialState,
     reducers: {
-        loginRequest:(state)=>{
-            state.loading = true;
+        setLoading:(state,action)=>{
+            state.loading = action.payload;
         },
-        loginSuccess:(state,action)=>{
-            state.loading =false;
-            state.isAuthenticated=true;
-            state.user = action.payload.data;
-            state.message=action.payload.message;
+        setError:(state,action)=>{
+            state.error = action.payload;
         },
-        loginFail:(state,action)=>{
-            state.loading=false;
-            state.isAuthenticated=false
-            state.error=action.payload
-        },
-        loadUserRequest:(state)=>{
-            state.loading = true;
-           
-        },
-        loadUserSuccess:(state,action)=>{
-            state.loading =false;
-            state.isAuthenticated=true;
-            state.user = action.payload;
-        },
-        loadUserFail:(state,action)=>{
-            state.loading=false;
-            state.isAuthenticated=false
-            state.error=action.payload;
-        },
-        clearError: state => {
+        clearError:(state)=>{
             state.error = null;
-          },
-          clearMessage: state => {
+        },
+        setMessage:(state, action)=>{
+            state.message = action.payload;
+        },
+        clearMessage:(state)=>{
             state.message = null;
+        },
+        setUser:(state,action)=>{
+            state.user=action.payload;
+        },
+        setAuthenticated: (state, action) => {
+            state.isAuthenticated = action.payload;
           },
     },
 });
 
-export const { loginRequest, loginSuccess, loginFail, clearError, clearMessage } = driverReducer.actions;
+export const {setLoading, setError, clearError, setMessage, clearMessage, setUser, setAuthenticated } = driverReducer.actions;
 export default driverReducer.reducer;

@@ -2,7 +2,8 @@
 import {BrowserRouter as Router , Routes, Route} from 'react-router-dom'
 import {ChakraProvider} from '@chakra-ui/react'
 import { lazy, useEffect, Suspense } from 'react';
-import toast, { Toaster } from 'react-hot-toast'
+import  toast, { Toaster } from 'react-hot-toast';
+import ErrorBoundary from '../ErrorBoundary';
 
 import './App.css'
 const MLogin = lazy(()=>import('./components/Login/MLogin'))
@@ -25,6 +26,9 @@ const AddDrivers = lazy(()=>import('./Admin/ManageData/AddDrivers'))
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from './Layout/Loader/Loader';
 import {clearError, clearMessage} from './redux/reducer/driverReducer'
+import { loadUser } from './redux/actions/driverAction';
+import ProtectedRoute from '../ProtectedRoute';
+
 
 
 function App() {
@@ -32,9 +36,9 @@ function App() {
   //   e.preventDefault();
   // });
 
- const {isAuthenticated, user, message, error, loading} = useSelector(state=>state.driver);
+ const {isAuthenticated, user, message, error, loading} = useSelector((state)=>state.driver);
 const dispatch = useDispatch();
-
+          
 useEffect(()=>{
   if(error){
     toast.error(error);
@@ -46,6 +50,10 @@ useEffect(()=>{
   }
 },[dispatch, error, message])
 
+useEffect(()=>{
+    dispatch(loadUser())
+},[dispatch])
+
   return (
     <ChakraProvider>
       <Router>
@@ -53,12 +61,17 @@ useEffect(()=>{
           loading ? (<Loader/>) : (
               <>
               <Suspense fallback={<Loader/>}>
-                <Routes>
+                  <ErrorBoundary>
+                  <Routes>
                   <Route path='/' element={<MHome/> }/>
 
-                  <Route path='/login' element={<MLogin/> }/>
+                  <Route path='/login' element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirectTo="/user" >
+                    <MLogin/>
+                  </ProtectedRoute> }/>
 
-                  <Route path='/user' element={<MUserProfile/> }/>
+                  <Route path='/user' element={ <ProtectedRoute isAuthenticated={isAuthenticated} redirectTo='/login'>
+                    <MUserProfile />
+                  </ProtectedRoute> }/>
 
 
                         {/* for Admin dashboard */}
@@ -71,6 +84,7 @@ useEffect(()=>{
                   <Route path='/AddDrivers' element={<AddDrivers/> }/>
 
                 </Routes>
+                  </ErrorBoundary>
               </Suspense>
               <Toaster position='top-center'/>
               </>

@@ -1,21 +1,41 @@
 import {server} from '../store';
 import axios from 'axios';
-import { loginRequest, loginSuccess, loginFail } from '../reducer/driverReducer';
-export const login = ({mobileNumber: UserId, DLnumber: Password})=>async dispatch=>{
+import { setAuthenticated, setError, setLoading, setMessage, setUser } from '../reducer/driverReducer';
+
+
+export const login = ({mobileNumber, DLnumber})=>async (dispatch)=>{
        try {
-        dispatch(loginRequest());
+        dispatch(setLoading(true));
         const {data}= await axios.post(
             `${server}/driver/driverLogin`,
-            {mobileNumber: UserId, DLnumber: Password},
-            {
-                headers:{
-                    'Content-Type': 'application/json',
-                },
-                withCredentials:true,
-            }
+            {mobileNumber, DLnumber},
+            { withCredentials:true }
         );
-        dispatch(loginSuccess({data, message: 'Login Successfull'}));
+        dispatch(setUser(data));
+        dispatch(setAuthenticated(true));
+        dispatch(setMessage('Login Successful'))
        } catch (error) {
-        dispatch(loginFail({message: error.response.data.message}));
+        dispatch(setError(error.response.data.message));
+       } finally{
+        dispatch(setLoading(false));
        }
-}
+};
+
+
+export const loadUser = ()=>async (dispatch)=>{
+    try {
+     dispatch(setLoading(true));
+     const {data}= await axios.get(
+         `${server}/driver/getdriverprofile`,
+         {
+             withCredentials:true,
+         });
+
+     dispatch(setUser(data));
+     dispatch(setAuthenticated(true));
+    } catch (error) {
+     dispatch(setError(error.response.data.message));
+    } finally{
+     dispatch(setLoading(false));
+    }
+};
