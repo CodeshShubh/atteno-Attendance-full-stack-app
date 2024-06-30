@@ -1,5 +1,7 @@
 import express from 'express';
-import {  //driverAttendance,
+import { 
+  AddriverAttendance,
+   FetchDriverAttendance,
    driverLogin,
   //  driverLogout, getAllDriver, 
     getDriverProfile,  newDriver } from '../Controllers/Driver.js';
@@ -8,16 +10,21 @@ import { isAuthenticated } from '../middlewares/auth.js';
 
 const app = express.Router();
 
-
-
   // route -  api/v1/driver/newdriver
 app.post('/newdriver', newDriver); //
 
-// route -  api/v1/driver/getDriver/Id
+// route -  api/v1/driver/getDriver/
 app.get('/getdriverprofile', isAuthenticated, getDriverProfile);
 
 // route -  api/v1/driver/driverLogin
 app.post('/driverLogin', driverLogin);
+
+// route -  api/v1/driver/add/attendance
+app.post('/add/attendance', isAuthenticated, AddriverAttendance);
+
+// route -  api/v1/driver/fetch/attendance
+app.get('/fetch/attendance', isAuthenticated, FetchDriverAttendance);
+
 
 // // route -  api/v1/driver/getAllDriver
 // app.get('/getalldriver', getAllDriver); //

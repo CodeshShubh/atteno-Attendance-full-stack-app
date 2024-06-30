@@ -4,6 +4,13 @@ import bcrypt from 'bcrypt';
 
 const { Schema, model } = mongoose;
 
+const attendanceSchema = new Schema({
+  year: { type: Number, required: true },
+  month: { type: Number, required: true },
+  days: [{ type: Number, required: true }]
+}, { _id: false });
+
+
 // Define the User schema
 const driverSchema = new Schema({
   name: {

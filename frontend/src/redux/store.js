@@ -1,11 +1,13 @@
 import {configureStore} from '@reduxjs/toolkit';
 import driverReducer from './reducer/driverReducer';
+import AttendanceReducer from './reducer/AttendanceReducer';
 
 
 
 export const store = configureStore({
     reducer:{
         driver: driverReducer,
+        Attendance : AttendanceReducer,
     },
 
 });

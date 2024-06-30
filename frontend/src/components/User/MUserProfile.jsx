@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MainNavBarContainer, OrangeButton } from '../Home/MHome';
 import { FaCircleArrowLeft,FaCircleArrowRight } from "react-icons/fa6";
 import dayjs from 'dayjs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAttendance, markAttendance } from '../../redux/actions/AttendanceAction';
 
 
 const MUserProfile = () => {
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchAttendance())
+  }, [dispatch])
+
 const [currentDate, setCurrentDate] = useState(dayjs());
   const daysInMonth = currentDate.daysInMonth();
   const currentMonthYear = currentDate.format('DD-MMM-YYYY');
@@ -18,13 +25,13 @@ const [currentDate, setCurrentDate] = useState(dayjs());
     const currentDay = currentDate.date();
     const currentMonth = currentDate.format('YYYY-MM');
     if (!(presentDays[currentMonth]?.includes(currentDay))) {
-      setPresentDays({
-        ...presentDays,
-        [currentMonth]: [...(presentDays[currentMonth] || []), currentDay],
-      });
+      setPresentDays({currentMonth, currentDate})
+       dispatch(markAttendance({currentMonth, currentDay}));
     }
   };
-    // console.log(presentDays);
+    
+  const {attendance} = useSelector((state)=>state.Attendance);
+  console.log(attendance)
 
   const handlePrevMonth = () => {
     setCurrentDate(currentDate.subtract(1, 'month')); 
@@ -33,23 +40,19 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   const handleNextMonth = () => {
     setCurrentDate(currentDate.add(1, 'month'));
   };
- const userData = {
-  name: "kdjfk",
-  vehicle: 'kdsjfk',
-  mobileNumber: 'kdjsfksd',
-  branchName: 'kdjhfjksdhf'
- }
- const {user, loading, message} = useSelector((state)=>state.driver)
- const data = user.driver
+
+ const {user, loading, message} = useSelector((state)=>state.driver);
+ const data = user.newDriver;
+ 
   return (
     <UserProfileConatiner>
         <div className='userinfo'>
                 <h1>Driver Information</h1>
             <div>
-                <p><span>Name</span>: { user? data.name : "NA"}</p>
-                <p><span>Vehicle</span>: {user? data.vehicle : "NA"}</p>
-                <p><span>Mobile</span>: {user? data.mobileNumber : "NA"}</p>
-                <p><span>Branceh </span>: {user? data.branchName : "NA"}</p>
+                <p><span>Name</span>: { data ? data.name : "NA"}</p>
+                <p><span>Vehicle</span>: {data ? data.vehicle : "NA"}</p>
+                <p><span>Mobile</span>: {data ? data.mobileNumber : "NA"}</p>
+                <p><span>Branceh </span>: {data ? data.branchName : "NA"}</p>
             </div>
         </div>
          
@@ -181,3 +184,4 @@ const Day = styled.div`
     }
         
 `
+
