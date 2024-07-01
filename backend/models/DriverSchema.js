@@ -4,83 +4,85 @@ import bcrypt from 'bcrypt';
 
 const { Schema, model } = mongoose;
 
+// Define schema for driver attendance
 const attendanceSchema = new Schema({
-  year: { type: Number, required: true },
-  month: { type: Number, required: true },
-  days: [{ type: Number, required: true }]
-}, { _id: false });
-
+    AttendanceRecords: [{
+          Year:  {type: Number, required: true},
+          months: [{
+            name: {
+                type: String,
+                required: true
+            },
+            days: [{
+                day: {
+                    type: Number,
+                    required: true
+                },
+                status: {
+                    type: String,
+                    enum: ['present', 'absent'],
+                    default: 'absent'
+                }
+            }]
+        }]
+    }]
+});
 
 // Define the User schema
 const driverSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "Please enter name"],
-    trim: true
-  },
-  vehicle: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  mobileNumber: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true
-  },
-  DLnumber: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true
-  },
-  branchName:{
-    type: String,
-    required: true,
-    trim: true
-  },
-    // Add an array field to store attendance data
-    attendance: [{
-      monthYear: { type: String, required: true },
-      presentDays: [{ type: Number, required: true }]
-    }]
-  
-
+    name: {
+        type: String,
+        required: [true, "Please enter name"],
+        trim: true
+    },
+    vehicle: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    mobileNumber: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    DLnumber: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    branchName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    attendance: {
+        type: [attendanceSchema],
+        default: []
+    }
 }, { timestamps: true });
 
-
+// Hash DLnumber before saving
 driverSchema.pre("save", async function(next){
-  if(!this.isModified("DLnumber")) return next();
-  this.DLnumber = await bcrypt.hash(this.DLnumber, 10);
-  next();
+    if(!this.isModified("DLnumber")) return next();
+    this.DLnumber = await bcrypt.hash(this.DLnumber, 10);
+    next();
 });
 
+// Generate JWT token for authentication
 driverSchema.methods.getJWTToken = function(){
-  return jwt.sign({_id: this._id}, process.env.JWT_SECRET,{
-    expiresIn: "15d",
-  });
+    return jwt.sign({_id: this._id}, process.env.JWT_SECRET,{
+        expiresIn: "15d",
+    });
 };
 
+// Compare hashed DLnumber for authentication
 driverSchema.methods.compareDLnumber = async function(DLnumber){
-  return await bcrypt.compare(DLnumber, this.DLnumber);
-}
+    return await bcrypt.compare(DLnumber, this.DLnumber);
+};
 
-// schema.methods.getResetToken = function () {
-//   const resetToken = crypto.randomBytes(20).toString("hex");
-
-//   this.resetPasswordToken = crypto
-//     .createHash("sha256")
-//     .update(resetToken)
-//     .digest("hex");
-
-//   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-
-//   return resetToken;
-// };
-
-
-// Create the User model
+// Create the Driver model
 const Driver = model('Driver', driverSchema);
 
 export default Driver;

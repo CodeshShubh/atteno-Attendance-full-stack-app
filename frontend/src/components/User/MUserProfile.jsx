@@ -10,28 +10,28 @@ import { fetchAttendance, markAttendance } from '../../redux/actions/AttendanceA
 const MUserProfile = () => {
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchAttendance())
-  }, [dispatch])
-
+  const {attendance, loading , error} = useSelector((state)=>state.Attendance);
+  const { user } = useSelector((state)=>state.driver);
+ 
 const [currentDate, setCurrentDate] = useState(dayjs());
   const daysInMonth = currentDate.daysInMonth();
   const currentMonthYear = currentDate.format('DD-MMM-YYYY');
   const startDayOfWeek = currentDate.startOf('month').day();
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  const [presentDays, setPresentDays] = useState({});
+  useEffect(() => {
+    dispatch(fetchAttendance())
+  }, [dispatch])
+
+  // const [presentDays, setPresentDays] = useState({});
   const handleMarkPresent = () => {
     const currentDay = currentDate.date();
     const currentMonth = currentDate.format('YYYY-MM');
-    if (!(presentDays[currentMonth]?.includes(currentDay))) {
-      setPresentDays({currentMonth, currentDate})
+    if (!attendance[currentMonth]?.includes(currentDay)) {  //!(presentDays[currentMonth]?.includes(currentDay))
+      // setPresentDays({ ...presentDays, [currentMonth]: [...(presentDays[currentMonth] || []), currentDay]})
        dispatch(markAttendance({currentMonth, currentDay}));
     }
   };
-    
-  const {attendance} = useSelector((state)=>state.Attendance);
-  console.log(attendance)
 
   const handlePrevMonth = () => {
     setCurrentDate(currentDate.subtract(1, 'month')); 
@@ -40,9 +40,31 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   const handleNextMonth = () => {
     setCurrentDate(currentDate.add(1, 'month'));
   };
+    
 
- const {user, loading, message} = useSelector((state)=>state.driver);
- const data = user.newDriver;
+   // Function to check if a day is marked present
+   const isDayPresent = (year, month, day) => {
+    const monthStr = month.toString();
+    // Ensure attendance is an array and not undefined or null
+    if (Array.isArray(attendance)) {
+      return attendance.some(driver => 
+        driver.AttendanceRecords.some(record => 
+          record.Year === year &&
+          record.months.some(m => 
+            m.name === monthStr && 
+            m.days.some(d => 
+              d.day === day && d.status === 'present'
+            )
+          )
+        )
+      );
+    }
+    return false; // Handle case where attendance is not yet fetched or invalid
+  };
+
+ 
+
+  const data = user.newDriver;
  
   return (
     <UserProfileConatiner>
@@ -72,21 +94,22 @@ const [currentDate, setCurrentDate] = useState(dayjs());
             <div key={`empty-${i}`} />
           ))}
           {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day) => (
-            <Day className='Day' key={day} isPresent={presentDays[currentDate.format('YYYY-MM')]?.includes(day)}>
+            <Day className='Day' key={day} ispresent={isDayPresent(currentDate.year(), currentDate.month() + 1, day)}>
               {day}
             </Day>
           ))}
         </div>
-        <OrangeButton onClick={handleMarkPresent}>Mark Present</OrangeButton>
+        <OrangeButton onClick={handleMarkPresent} disabled={loading}>
+          {loading ? "Marking..." : "Mark Present"}
+          </OrangeButton>
       </div>
          
          <div className='totalPersent'>
-            <h1>Total Persent : {presentDays[currentDate.format('YYYY-MM')]?.length || 0}</h1>
+            <h1>Total Persent : {attendance[currentDate.format('YYYY-MM')]?.length || 0}</h1>
          </div>
-
     </div>
 
-
+      {error && <ErrorMessage>{error}</ErrorMessage> }
 
     </UserProfileConatiner>
   )
@@ -166,7 +189,11 @@ const UserProfileConatiner = styled(MainNavBarContainer)`
     }
 `
 
-const Day = styled.div`
+const Day = styled.div.attrs(props => ({
+  // Filter out the ispresent prop to avoid passing it to the DOM
+  ispresent: undefined,
+}))`
+
 
     width: 40px;
     height: 40px;
@@ -174,14 +201,13 @@ const Day = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: ${(props) => (props.isPresent ? '#4caf50' : '#fff')};
-    color: ${(props) => (props.isPresent ? '#fff' : '#000')};
+    background-color: ${(props) => (props.ispresent ? '#4caf50' : '#fff')};
+    color: ${(props) => (props.ispresent ? '#fff' : '#000')};
     cursor: pointer;
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: ${(props) => (props.isPresent ? '#45a045' : '#e0e0e0')};
+        background-color: ${(props) => (props.ispresent ? '#45a045' : '#e0e0e0')};
     }
         
 `
-

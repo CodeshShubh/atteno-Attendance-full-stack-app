@@ -24,7 +24,7 @@ export const driverReducer = createSlice({
         },
         setMessage:(state, action)=>{
             state.message = action.payload;
-        },
+        }, 
         clearMessage:(state)=>{
             state.message = null;
         },

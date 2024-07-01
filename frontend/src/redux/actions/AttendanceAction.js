@@ -17,7 +17,7 @@ export const markAttendance = ({currentMonth, currentDay})=>async (dispatch) =>{
             withCredentials: true,
         }
     );
-    dispatch(setMarkAttendance({ currentMonth, currentDay }));
+    dispatch(setMarkAttendance(data));
     dispatch(setMessage('Attendance Mark'));
  }catch(error){
         dispatch(setError(error.response.data.message));
@@ -40,5 +40,7 @@ export const fetchAttendance =()=> async(dispatch)=>{
         dispatch(setFetchAttendance(data));
     }catch(error){
         dispatch(setError(error.response.data.message))
-    }
+    }finally{
+        dispatch(setLoading(false));
+       }
 }
