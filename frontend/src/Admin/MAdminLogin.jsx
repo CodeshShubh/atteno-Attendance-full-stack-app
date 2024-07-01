@@ -1,9 +1,27 @@
 import styled from 'styled-components';
 import img from '../assets/adminLoginImage.png'
 import { OrangeButton } from '../components/Home/MHome';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AdminLogin } from '../redux/actions/AdminLoginAction';
+import { useState } from 'react';
+
+
 
 const MAdminLogin = () => {
+
+  const [AdminUserId, setAdminUserId] = useState("");
+const [Password, setPassword] = useState("");
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+
+const AdminLoginHandler =(e)=>{
+   e.preventDefault();
+   dispatch(AdminLogin({AdminUserId, Password}));
+    navigate('/admindashboard')
+}
+
+const {loading} = useSelector(state=>state.AdminLogin)
   return (
     <AdminLoginContainer>
             <div className='headingtop'>
@@ -15,10 +33,18 @@ const MAdminLogin = () => {
           <div className='image'>
           <img src={img} alt='adminloginPageImage'/>
           </div>
-          <form className='Inputfilds'>
-              <input type='text' name='username' placeholder='User Name'/>
-              <input type='password' name='password' placeholder='Password'/>
-              <OrangeButton>Login</OrangeButton>
+          <form onSubmit={AdminLoginHandler} className='Inputfilds'>
+              <input 
+              type='text' 
+              value={AdminUserId} 
+              placeholder='User Id' 
+              onChange={(e)=>setAdminUserId(e.target.value)} />
+              <input 
+              type='password' 
+              value={Password} 
+              placeholder='Password' 
+              onChange={(e)=>setPassword(e.target.value)}/>
+              <OrangeButton type='submit'>{ loading ? "Login... ": "Login"}</OrangeButton>
           </form>
           <div className='bottomurl'>
               <p>Request For a Account <Link>Click here</Link> </p>

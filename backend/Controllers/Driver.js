@@ -3,27 +3,6 @@ import ErrorHandler from "../middlewares/errorHandler.js";
 import Driver from "../models/DriverSchema.js";
 import { sendToken } from "../utils/sendToken.js";
 
-export const newDriver = catchAsyncErrror(async(req, res, next)=>{
-    const {name, vehicle, mobileNumber, DLnumber, branchName   } = req.body; 
-    
-      if(!name || !vehicle || !mobileNumber || !DLnumber || !branchName)
-        return next(new ErrorHandler("Please Enter All Fild", 400));
-
-          let user = await Driver.findOne({mobileNumber});
-
-          if(user) return next(new ErrorHandler("Driver Already Exist", 409));
-
-     const newDriver = await Driver.create({
-      name, 
-      vehicle, 
-      mobileNumber, 
-      DLnumber, 
-      branchName
-     })
-     await newDriver.save();
-     sendToken(res, newDriver , "New Driver Created", 201);
-});
-
 
 export const getDriverProfile = catchAsyncErrror(async (req, res, next) => {
     const  driver  = await Driver.findById(req.user._id); // Extracting driverId from URL parameters
@@ -45,7 +24,7 @@ export const driverLogin = catchAsyncErrror(async(req,res,next)=>{
         // Find driver by DL
         const user = await Driver.findOne({mobileNumber}).select("+DLnumber");
  
-        if(!user) return next(new ErrorHandler("Incorrect UserId or Password", 401))
+        if(!user) return next(new ErrorHandler("User Not found", 401))
          
         const isMatch = await user.compareDLnumber(DLnumber);
 

@@ -59,7 +59,7 @@ useEffect(()=>{
       <Router>
          {
           loading ? (<Loader/>) : (
-              <>
+              <> 
               <Suspense fallback={<Loader/>}>
                   <ErrorBoundary>
                   <Routes>

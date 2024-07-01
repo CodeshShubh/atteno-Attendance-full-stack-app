@@ -5,7 +5,7 @@ import { MainNavBarContainer, OrangeButton } from "../Home/MHome";
 import { useState } from "react";
 import { login } from "../../redux/actions/driverAction";
 import { useNavigate } from "react-router-dom";
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 
 const MLogin = () => {
   const [UserId, setUserId] = useState("");
@@ -19,7 +19,8 @@ const MLogin = () => {
         navigate("/user")
   };
 
-
+   const {loading} = useSelector(state=>state.driver)
+   
   return (
     <LoginPageContainer>
       <div className="TopHeading">
@@ -41,8 +42,7 @@ const MLogin = () => {
               placeholder="Enter Password"
             />
         <LoginPageButton type="submit">
-          {/* {loading ? 'Logging in...' :  "Login"} */}
-          Login
+          {loading ? 'Logging in...' :  "Login"}
           </LoginPageButton>
         {/* {error && <p style={{ color: 'red' }}>{error.data?.message || 'Login failed'}</p>} */}
       </form>

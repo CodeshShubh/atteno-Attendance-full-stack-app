@@ -4,7 +4,9 @@ import cors from 'cors'
 import ErrorMiddleware from './middlewares/Error.js';
 
 
-import driverRoute from './Routes/DriverRoutes.js'
+import driverRoute from './Routes/DriverRoutes.js';
+import adminRoute from './Routes/AdminRoutes.js';
+
 import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 
@@ -36,7 +38,7 @@ app.use(cookieParser());
 
 
 app.use('/api/v1/driver', driverRoute);
-
+app.use('/api/v1/admin', adminRoute)
 
 
 app.get("/", (req, res)=>{
