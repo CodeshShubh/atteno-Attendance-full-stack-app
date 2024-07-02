@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const MultpleCards = ({id,name,vehicle}) => {
   return (
     <MultipleCardContainer>
-            <p key={id}>{id}. {name} - {vehicle}</p>
+            <p key={id}> {name} - {vehicle}</p>
     </MultipleCardContainer>
   )
 }

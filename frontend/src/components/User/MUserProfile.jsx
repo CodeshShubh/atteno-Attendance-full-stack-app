@@ -4,13 +4,12 @@ import { MainNavBarContainer, OrangeButton } from '../Home/MHome';
 import { FaCircleArrowLeft,FaCircleArrowRight } from "react-icons/fa6";
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAttendance, markAttendance } from '../../redux/actions/AttendanceAction';
+import { markAttendance } from '../../redux/actions/driverAction';
 
 
 const MUserProfile = () => {
 
   const dispatch = useDispatch();
-  const {attendance, loading , error} = useSelector((state)=>state.Attendance);
   const { user } = useSelector((state)=>state.driver);
  
 const [currentDate, setCurrentDate] = useState(dayjs());
@@ -19,9 +18,6 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   const startDayOfWeek = currentDate.startOf('month').day();
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  useEffect(() => {
-    dispatch(fetchAttendance())
-  }, [dispatch])
 
   // const [presentDays, setPresentDays] = useState({});
   const handleMarkPresent = () => {
@@ -42,25 +38,7 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   };
     
 
-   // Function to check if a day is marked present
-   const isDayPresent = (year, month, day) => {
-    const monthStr = month.toString();
-    // Ensure attendance is an array and not undefined or null
-    if (Array.isArray(attendance)) {
-      return attendance.some(driver => 
-        driver.AttendanceRecords.some(record => 
-          record.Year === year &&
-          record.months.some(m => 
-            m.name === monthStr && 
-            m.days.some(d => 
-              d.day === day && d.status === 'present'
-            )
-          )
-        )
-      );
-    }
-    return false; // Handle case where attendance is not yet fetched or invalid
-  };
+
 
  
 
@@ -94,22 +72,20 @@ const [currentDate, setCurrentDate] = useState(dayjs());
             <div key={`empty-${i}`} />
           ))}
           {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day) => (
-            <Day className='Day' key={day} ispresent={isDayPresent(currentDate.year(), currentDate.month() + 1, day)}>
+            <Day className='Day' key={day}>
               {day}
             </Day>
           ))}
         </div>
-        <OrangeButton onClick={handleMarkPresent} disabled={loading}>
-          {loading ? "Marking..." : "Mark Present"}
+        <OrangeButton onClick={handleMarkPresent}>
+          {/* loading ? "Marking..." : "Mark Present" */} Mark Present
           </OrangeButton>
       </div>
          
          <div className='totalPersent'>
-            <h1>Total Persent : {attendance[currentDate.format('YYYY-MM')]?.length || 0}</h1>
+            <h1>Total Persent : 0 </h1>
          </div>
     </div>
-
-      {error && <ErrorMessage>{error}</ErrorMessage> }
 
     </UserProfileConatiner>
   )

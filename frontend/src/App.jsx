@@ -2,7 +2,7 @@
 import {BrowserRouter as Router , Routes, Route} from 'react-router-dom'
 import {ChakraProvider} from '@chakra-ui/react'
 import { lazy, useEffect, Suspense } from 'react';
-import  toast, { Toaster } from 'react-hot-toast';
+// import  toast, { Toaster } from 'react-hot-toast';
 import ErrorBoundary from '../ErrorBoundary';
 
 import './App.css'
@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from './Layout/Loader/Loader';
 import { loadUser } from './redux/actions/driverAction';
 import ProtectedRoute from '../ProtectedRoute';
+import { AdminloadDrivers, getAdminProfile } from './redux/actions/AdminLoginAction';
 
 
 
@@ -38,18 +39,24 @@ function App() {
  const {isAuthenticated, message, error, loading} = useSelector((state)=>state.driver);
 const dispatch = useDispatch();
           
-useEffect(()=>{
-  if(error){
-    toast.error(error);
-  }
-  if(message){
-    toast.success(message)
-  }
-},[dispatch, error, message])
+// useEffect(()=>{
+//   if(error){
+//     toast.error(error);
+//   }
+//   if(message){
+//     toast.success(message)
+//   }
+// },[dispatch, error, message])
 
 useEffect(()=>{
-    dispatch(loadUser())
+    dispatch(loadUser());
+    dispatch(getAdminProfile());
+    dispatch(AdminloadDrivers());
 },[dispatch])
+
+
+
+
 
   return (
     <ChakraProvider>
@@ -83,7 +90,7 @@ useEffect(()=>{
                 </Routes>
                   </ErrorBoundary>
               </Suspense>
-              <Toaster position='top-center'/>
+              {/* <Toaster position='top-center'/> */}
               </>
           )
          }

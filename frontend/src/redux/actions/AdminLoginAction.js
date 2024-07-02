@@ -18,3 +18,46 @@ export const AdminLogin = ({AdminUserId, Password})=> async(dispatch)=>{
         dispatch(setLoading(false))
     }
 };
+
+
+export const getAdminProfile =()=>async (dispatch)=>{
+
+    try {
+        dispatch(setLoading(true));
+        const {data} = await axios.get(
+            `${server}/admin/getadminprofile`,
+            {
+                withCredentials: true,
+            }
+        );
+        dispatch(setUser(data));
+        dispatch(setisAuthenticated(true));
+    } catch (error) {
+        dispatch(setError(error.response.data.message));
+    } finally{
+        dispatch(setLoading(false));
+    }
+
+};
+
+
+
+
+
+export const AdminloadDrivers = ()=> async (dispatch)=>{
+    try {
+     dispatch(setLoading(true));
+     const {data}= await axios.get(
+         `${server}/admin/fetch/drivers`,
+         {
+             withCredentials:true,
+         });
+
+     dispatch(setUser(data));
+     dispatch(setisAuthenticated(true));
+    } catch (error) {
+     dispatch(setError(error.response.data.message));
+    } finally{
+     dispatch(setLoading(false));
+    }
+};

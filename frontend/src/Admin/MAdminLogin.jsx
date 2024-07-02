@@ -10,7 +10,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const MAdminLogin = () => {
  
-const {loading, isAuthenticated, error, message } = useSelector(state=>state.AdminLogin);
+const {AdminLoading, AdminAuthenticated, AdminError, AdminMessage } = useSelector(state=>state.AdminLogin);
 
   const [AdminUserId, setAdminUserId] = useState("");
 const [Password, setPassword] = useState("");
@@ -23,16 +23,16 @@ const AdminLoginHandler =(e)=>{
 }
 
 useEffect(()=>{
-  if(isAuthenticated){
+  if(AdminAuthenticated){
     navigate('/admindashboard')
   }
-  if(error){
-    toast.success(error)
+  if(AdminError){
+    toast.error(AdminError)
   }
-  if(message){
-    toast.success(message)
+  if(AdminMessage){
+    toast.success(AdminMessage)
   }
-},[ dispatch, error, message ])
+},[ dispatch, AdminError, AdminMessage ])
 
   return (
     <AdminLoginContainer>
@@ -56,7 +56,7 @@ useEffect(()=>{
               value={Password} 
               placeholder='Password' 
               onChange={(e)=>setPassword(e.target.value)}/>
-              <OrangeButton type='submit'>{ loading ? "Login... ": "Login"}</OrangeButton>
+              <OrangeButton type='submit'>{ AdminLoading ? "Login... ": "Login"}</OrangeButton>
           </form>
           <div className='bottomurl'>
               <p>Request For a Account <Link>Click here</Link> </p>

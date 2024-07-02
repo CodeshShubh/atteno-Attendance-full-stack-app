@@ -150,8 +150,6 @@ export const FetchDriverAttendance = catchAsyncErrror(async(req,res,next)=>{
 
 
 
-
-
 // export const driverLogout = async(req,res)=>{
 //     const {driverId}=req.params;
 

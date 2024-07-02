@@ -1,11 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    loading: false,
-    isAuthenticated: false,
-    error: null,
-    message: null,
-    user: null,
+    AdminLoading: false,
+    AdminAuthenticated: false,
+    AdminError: null,
+    AdminMessage: null,
+    AdminUser: null,
 };
 
 
@@ -14,25 +14,25 @@ export const AdminLoginReducer = createSlice({
     initialState,
     reducers:{
         setLoading:(state, action)=>{
-           state.loading = action.payload;
+           state.AdminLoading = action.payload;
         },
         setisAuthenticated:(state, action)=>{
-             state.isAuthenticated = action.payload;
+             state.AdminAuthenticated = action.payload;
         },
         setError:(state, action)=>{
-            state.error = action.payload
+            state.AdminError = action.payload
         },
         clearError:(state)=>{
-            state.error = null
+            state.AdminError = null
         },
         setMessage:(state, action)=>{
-            state.message = action.payload;
+            state.AdminMessage = action.payload;
         },
         clearMessage:(state)=>{
-            state.message = null
+            state.AdminMessage = null
         },
         setUser:(state, action)=>{
-            state.action = action.payload;
+            state.AdminUser = action.payload;
         }
     }
 

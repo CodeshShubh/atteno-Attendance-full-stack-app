@@ -3,7 +3,7 @@ import ErrorHandler from "../middlewares/errorHandler.js";
 import Admin from "../models/AdminSchema.js";
 import Driver from "../models/DriverSchema.js";
 import { AdminSendToken } from "../utils/AdminSendToken.js";
-import { sendToken } from "../utils/sendToken.js";
+
 
 
 export const AdminRegistration = catchAsyncErrror(async(req,res,next)=>{
@@ -46,6 +46,18 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
 
       AdminSendToken(res, user, "Welcome Back" , 200);
     });
+
+
+
+    export const getAdminProfile = catchAsyncErrror(async (req, res, next) => {
+        const  user  = await Admin.findById(req.user._id); // Extracting driverId from URL parameters
+        if (!user) {
+            return next(new ErrorHandler("Driver not found", 404));
+        }
+    
+        AdminSendToken(res, user,  "DetaFetch" , 200)
+         
+    }); 
 
 
 
