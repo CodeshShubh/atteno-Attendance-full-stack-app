@@ -4,11 +4,13 @@ import { OrangeButton } from '../components/Home/MHome';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminLogin } from '../redux/actions/AdminLoginAction';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const MAdminLogin = () => {
+ 
+const {loading, isAuthenticated, error, message } = useSelector(state=>state.AdminLogin);
 
   const [AdminUserId, setAdminUserId] = useState("");
 const [Password, setPassword] = useState("");
@@ -18,10 +20,20 @@ const [Password, setPassword] = useState("");
 const AdminLoginHandler =(e)=>{
    e.preventDefault();
    dispatch(AdminLogin({AdminUserId, Password}));
-    navigate('/admindashboard')
 }
 
-const {loading} = useSelector(state=>state.AdminLogin)
+useEffect(()=>{
+  if(isAuthenticated){
+    navigate('/admindashboard')
+  }
+  if(error){
+    toast.success(error)
+  }
+  if(message){
+    toast.success(message)
+  }
+},[ dispatch, error, message ])
+
   return (
     <AdminLoginContainer>
             <div className='headingtop'>
@@ -49,7 +61,7 @@ const {loading} = useSelector(state=>state.AdminLogin)
           <div className='bottomurl'>
               <p>Request For a Account <Link>Click here</Link> </p>
           </div>
-          
+          <Toaster position='top-center'/>
     </AdminLoginContainer>
   )
 }

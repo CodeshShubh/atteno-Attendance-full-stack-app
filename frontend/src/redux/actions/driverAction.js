@@ -8,7 +8,7 @@ export const login = ({mobileNumber, DLnumber})=>async (dispatch)=>{
         dispatch(setLoading(true));
         const {data}= await axios.post(
             `${server}/driver/driverLogin`,
-            {mobileNumber, DLnumber},
+            {mobileNumber, DLnumber}, 
             { withCredentials:true }
         );
         dispatch(setUser(data));

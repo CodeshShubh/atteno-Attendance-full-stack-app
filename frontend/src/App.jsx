@@ -25,7 +25,6 @@ const AddDrivers = lazy(()=>import('./Admin/ManageData/AddDrivers'))
 
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from './Layout/Loader/Loader';
-import {clearError, clearMessage} from './redux/reducer/driverReducer'
 import { loadUser } from './redux/actions/driverAction';
 import ProtectedRoute from '../ProtectedRoute';
 
@@ -36,17 +35,15 @@ function App() {
   //   e.preventDefault();
   // });
 
- const {isAuthenticated, user, message, error, loading} = useSelector((state)=>state.driver);
+ const {isAuthenticated, message, error, loading} = useSelector((state)=>state.driver);
 const dispatch = useDispatch();
           
 useEffect(()=>{
   if(error){
     toast.error(error);
-    dispatch(clearError())
   }
   if(message){
     toast.success(message)
-    dispatch(clearMessage())
   }
 },[dispatch, error, message])
 

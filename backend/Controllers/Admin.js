@@ -3,6 +3,7 @@ import ErrorHandler from "../middlewares/errorHandler.js";
 import Admin from "../models/AdminSchema.js";
 import Driver from "../models/DriverSchema.js";
 import { AdminSendToken } from "../utils/AdminSendToken.js";
+import { sendToken } from "../utils/sendToken.js";
 
 
 export const AdminRegistration = catchAsyncErrror(async(req,res,next)=>{
@@ -25,7 +26,6 @@ export const AdminRegistration = catchAsyncErrror(async(req,res,next)=>{
 
 
 
-
 export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
    
     const {AdminUserId, Password} = req.body;
@@ -41,27 +41,26 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
       const isPasswordMatch = await user.comparePassword(Password)
     
       if (!isPasswordMatch) {
-        return next(new ErrorHandler("Invalid Credentials", 401));
+        return next(new ErrorHandler("Invalid PassWord", 401));
       }
-    
-      // Send response if login is successful
-      res.status(200).json({
-        success: true,
-        user,
-      });
+
+      AdminSendToken(res, user, "Welcome Back" , 200);
     });
 
 
 
     export const AddNewDriver = catchAsyncErrror(async(req, res, next)=>{
+
+        const adminid = req.user._id;
+                
         const {name, vehicle, mobileNumber, DLnumber, branchName   } = req.body; 
         
           if(!name || !vehicle || !mobileNumber || !DLnumber || !branchName)
             return next(new ErrorHandler("Please Enter All Fild", 400));
     
-              let user = await Driver.findOne({mobileNumber});
+              let driver = await Driver.findOne({ mobileNumber });
     
-              if(user) return next(new ErrorHandler("Driver Already Exist", 409));
+              if(driver) return next(new ErrorHandler("Driver Already Exist", 409));
     
          const newDriver = await Driver.create({
           name, 
@@ -71,5 +70,27 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
           branchName
          })
          await newDriver.save();
-         AdminSendToken(res, newDriver , "New Driver Created", 201);
+         res.status(200).json({
+            success: true,
+            Message: "New Driver Add Succesfully",
+            newDriver
+         })
     });
+
+
+
+
+    export const getAllDrivers = catchAsyncErrror(async(req, res, next)=>{
+    try {
+        const allDrivers = await Driver.find();
+        res.status(200).json({
+            message: "All Drivers fetched successfully",
+            getalldrivers: allDrivers
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to fetch drivers",
+            Error: error
+        });
+    }
+    })

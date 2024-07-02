@@ -151,26 +151,6 @@ export const FetchDriverAttendance = catchAsyncErrror(async(req,res,next)=>{
 
 
 
-// export const getAllDriver = async (req, res) => {
-//     try {
-//         const getAllDrivers = await Driver.find();
-//         res.status(200).json({
-//             message: "All Drivers fetched successfully",
-//             getalldrivers: getAllDrivers
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             message: "Failed to fetch drivers",
-//             Error: error
-//         });
-//     }
-// };
-
-
-
-
-
-
 
 // export const driverLogout = async(req,res)=>{
 //     const {driverId}=req.params;

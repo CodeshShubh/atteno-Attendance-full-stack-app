@@ -7,7 +7,7 @@ export const AdminLogin = ({AdminUserId, Password})=> async(dispatch)=>{
        dispatch(setLoading(true))
        const {data} =  await axios.post(`${server}/admin/login`, 
         {AdminUserId, Password},
-        {withCredentials:true}
+        { withCredentials:true }
        );
        dispatch(setUser(data));
        dispatch(setisAuthenticated(true));

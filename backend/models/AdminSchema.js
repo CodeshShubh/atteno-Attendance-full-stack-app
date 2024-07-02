@@ -25,11 +25,12 @@ import { Schema, model } from "mongoose";
 });
 
 // Generate JWT token for authentication
-AdminSchema.methods.getJWTToken = function(){
+AdminSchema.methods.adminToken = function(){
     return jwt.sign({_id: this._id}, process.env.JWT_SECRET,{
         expiresIn: "15d",
     });
 };
+
 
 AdminSchema.methods.comparePassword = async function(Password){
     return await bcrypt.compare(Password, this.Password);

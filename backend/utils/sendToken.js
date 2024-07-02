@@ -13,5 +13,5 @@ export const sendToken = (res, newDriver , message, statusCode = 200)=>{
         message,
         newDriver,
     })
-
+ 
 }

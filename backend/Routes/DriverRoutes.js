@@ -3,12 +3,14 @@ import {
   AddriverAttendance,
    FetchDriverAttendance,
    driverLogin,
-  //  driverLogout, getAllDriver, 
+  //  driverLogout,
     getDriverProfile } from '../Controllers/Driver.js';
 import { isAuthenticated } from '../middlewares/auth.js';
 
 
 const app = express.Router();
+
+
 
 // route -  api/v1/driver/getDriver/
 app.get('/getdriverprofile', isAuthenticated, getDriverProfile);
