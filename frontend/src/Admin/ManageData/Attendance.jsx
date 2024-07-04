@@ -1,117 +1,53 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { BackwardArrow } from '../admincomponents/btns';
 import { useNavigate } from 'react-router-dom';
 import { OrangeButton } from '../../components/Home/MHome';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import * as XLSX from 'xlsx'; 
 
 const Attendance = () => {
 
-    // const {} = useSelector(state=>state.AdminLogin)
-    const Drivers = [
-        {
-            id: 1,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 2,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 3,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 4,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 5,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 6,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 7,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 8,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 9,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 10,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 11,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-        {
-            id: 12,
-            name: "Ramesh",
-            vehicle: "DL1MD2975",
-            persent: 25,
-            Absent: 5,
-            TotalTrip: 25,
-        },
-    ];
+    const { AdminUser } = useSelector(state => state.AdminLogin);
+    const Drivers = AdminUser.getalldrivers;
+
+     
+  const today = dayjs().date(); // Today's date
+  const currentMonth = dayjs().month() + 1; // Month is 0-indexed
+  const currentYear = dayjs().year();
 
       const navigation = useNavigate();
     const BackwordArrowHandler =(e)=>{
       e.preventDefault()
         navigation('/admindashboard')
     }
+
+    const driversWithStatus = useMemo(() => {
+        return Drivers.map(driver => {
+          const attendanceRecords = driver.attendance.find(record => record.AttendanceRecords.some(r => r.Year === currentYear));
+          const monthRecord = attendanceRecords?.AttendanceRecords.find(r => r.Year === currentYear)?.months.find(month => parseInt(month.name) === currentMonth);
+          const presentDays = monthRecord?.days.filter(day => day.status === 'present').length || 0;
+          const absentDays = monthRecord?.days.filter(day => day.status === 'absent').length || 0;
+          const totalTrips = presentDays + absentDays; // Assuming total trips is the sum of present and absent days
+    
+          return {
+            ...driver,
+            present: presentDays,
+            absent: absentDays,
+            totalTrips: totalTrips,
+          };
+        });
+      }, [Drivers, currentMonth, currentYear]);
+
+     const handleDownload =()=>{
+        const worksheet = XLSX.utils.json_to_sheet(driversWithStatus);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Drivers Attendance')
+        XLSX.writeFile(workbook, 'drivers_attendancd.xlsx')
+     };
+
+
 
     return (
         <Container>
@@ -130,19 +66,19 @@ const Attendance = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {Drivers.map((driver) => (
-                            <tr key={driver.id}>
-                                <td>{driver.name}</td>
+                        {driversWithStatus.map((driver) => (
+                            <tr key={driver._id}>
+                                <td >{driver.name}</td>
                                 <td>{driver.vehicle}</td>
-                                <td style={{ backgroundColor: "green", color: "white" }}>{driver.persent}</td>
-                                <td style={{ backgroundColor: "red", color: "white" }}>{driver.Absent}</td>
-                                <td style={{ backgroundColor: "blue", color: "white" }}>{driver.TotalTrip}</td>
+                                <td style={{ backgroundColor: "green", color: "white" }}>{driver.present}</td>
+                                <td style={{ backgroundColor: "red", color: "white" }}>{driver.absent}</td>
+                                <td style={{ backgroundColor: "blue", color: "white" }}>{driver.totalTrips}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </DriverAttendanceContainer>
-            <OrangeButton>Download</OrangeButton>
+            <OrangeButton onClick={handleDownload}>Download</OrangeButton>
         </Container>
     );
 };
@@ -168,9 +104,9 @@ const DriverAttendanceContainer = styled.div`
 
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 2px;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         th {
