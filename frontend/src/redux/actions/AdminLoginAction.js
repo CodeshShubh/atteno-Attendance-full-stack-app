@@ -20,8 +20,7 @@ export const AdminLogin = ({AdminUserId, Password})=> async(dispatch)=>{
 };
 
 
-export const getAdminProfile =()=>async (dispatch)=>{
-
+export const getAdminProfile =()=> async (dispatch)=>{
     try {
         dispatch(setLoading(true));
         const {data} = await axios.get(
@@ -37,10 +36,7 @@ export const getAdminProfile =()=>async (dispatch)=>{
     } finally{
         dispatch(setLoading(false));
     }
-
 };
-
-
 
 
 
@@ -52,7 +48,6 @@ export const AdminloadDrivers = ()=> async (dispatch)=>{
          {
              withCredentials:true,
          });
-
      dispatch(setUser(data));
      dispatch(setisAuthenticated(true));
     } catch (error) {

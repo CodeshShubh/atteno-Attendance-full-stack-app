@@ -33,18 +33,18 @@ export const driverReducer = createSlice({
         setAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
           },
-        setMarkAttendance: (state)=>{
-        const { currentMonth, currentDay } = action.payload;
-        if (!state.attendance[currentMonth]){
-            state.attendance[currentMonth] =[];
-        }
-        state.attendance[currentMonth].push(currentDay);
+        setMarkAttendance: (state, action)=>{
+        state.user.newDriver.attendance = action.payload;
         },
-        setFetchAttendance: (state, action) => {
-            state.attendance = action.payload;
-        },  
     },
 });
 
-export const {setLoading, setError, clearError, setMessage, clearMessage, setUser, setAuthenticated, setMarkAttendance, setFetchAttendance } = driverReducer.actions;
-export default driverReducer.reducer;
+export const {setLoading, 
+    setError, 
+    clearError, 
+    setMessage, 
+    clearMessage, 
+    setUser, 
+    setAuthenticated, 
+    setMarkAttendance } = driverReducer.actions;
+    export default driverReducer.reducer;

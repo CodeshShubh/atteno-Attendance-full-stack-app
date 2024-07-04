@@ -4,28 +4,68 @@ import { MainNavBarContainer, OrangeButton } from '../Home/MHome';
 import { FaCircleArrowLeft,FaCircleArrowRight } from "react-icons/fa6";
 import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
-import { markAttendance } from '../../redux/actions/driverAction';
+import { loadUser, markAttendance } from '../../redux/actions/driverAction';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const MUserProfile = () => {
-
   const dispatch = useDispatch();
-  const { user } = useSelector((state)=>state.driver);
- 
+  const { user, loading, error, message} = useSelector((state)=>state.driver);
+  const data = user?.newDriver;
+  const AttendanceArray = user?.newDriver?.attendance;
 const [currentDate, setCurrentDate] = useState(dayjs());
+const [attendanceData, setAttendanceData] = useState([]);
+
   const daysInMonth = currentDate.daysInMonth();
   const currentMonthYear = currentDate.format('DD-MMM-YYYY');
   const startDayOfWeek = currentDate.startOf('month').day();
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  useEffect(() => {
+    if (AttendanceArray && AttendanceArray.length > 0) {
+      const currentYear = currentDate.year(); 
+      const currentMonth = currentDate.month() + 1; // dayjs months are 0-indexed
+  
+      const currentYearAttendance = AttendanceArray.find(
+        (record) => record.AttendanceRecords.find((yr) => yr.Year === currentYear)
+      );
+  
+      if (currentYearAttendance) {
+        const monthData = currentYearAttendance.AttendanceRecords[0].months.find(
+          (month) => parseInt(month.name) === currentMonth
+        );
+        setAttendanceData(monthData ? monthData.days : []);
+      } else {
+        setAttendanceData([]);
+      }
+    }
+  }, [AttendanceArray, currentDate]);
 
-  // const [presentDays, setPresentDays] = useState({});
-  const handleMarkPresent = () => {
+  useEffect(()=>{
+       if(error){
+    toast.error(error);
+  }
+  if(message){
+    toast.success(message);
+  }
+  },[dispatch, error, message])
+  
+
+  const handleMarkPresent = (e) => {
+    e.preventDefault();
     const currentDay = currentDate.date();
-    const currentMonth = currentDate.format('YYYY-MM');
-    if (!attendance[currentMonth]?.includes(currentDay)) {  //!(presentDays[currentMonth]?.includes(currentDay))
-      // setPresentDays({ ...presentDays, [currentMonth]: [...(presentDays[currentMonth] || []), currentDay]})
-       dispatch(markAttendance({currentMonth, currentDay}));
+    const currentMonth = currentDate.format('M');
+    const currentYear = currentDate.year();
+    const isPresent = attendanceData.some(day => day.day === currentDay && day.status === "present");
+
+    if (!isPresent) {
+       dispatch(markAttendance({currentYear, currentMonth, currentDay})).then(()=>{
+                // Update the attendance data locally after successful dispatch
+        setAttendanceData([...attendanceData, { day: currentDay, status: "present" }]);
+        dispatch(loadUser());
+       }).catch((error)=>{
+        console.error('Error marking attendance:', error)
+       });
     }
   };
 
@@ -36,14 +76,7 @@ const [currentDate, setCurrentDate] = useState(dayjs());
   const handleNextMonth = () => {
     setCurrentDate(currentDate.add(1, 'month'));
   };
-    
-
-
-
- 
-
-  const data = user.newDriver;
- 
+     
   return (
     <UserProfileConatiner>
         <div className='userinfo'>
@@ -71,22 +104,26 @@ const [currentDate, setCurrentDate] = useState(dayjs());
           {Array.from({ length: startDayOfWeek }, (_, i) => (
             <div key={`empty-${i}`} />
           ))}
-          {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day) => (
-            <Day className='Day' key={day}>
+          {Array.from({ length: daysInMonth }, (_, i) => {
+               const day = i+1;
+              const isPresent = attendanceData.some(d => d.day === day && d.status === "present");
+            return(
+              <Day className='Day' key={day} $ispresent={isPresent}>
               {day}
             </Day>
-          ))}
+            );
+         })}
         </div>
         <OrangeButton onClick={handleMarkPresent}>
-          {/* loading ? "Marking..." : "Mark Present" */} Mark Present
+         { loading ? "Marking..." : "Mark Present"}
           </OrangeButton>
       </div>
          
          <div className='totalPersent'>
-            <h1>Total Persent : 0 </h1>
+            <h1>Total Persent : {attendanceData.filter(day => day.status === "present").length} </h1>
          </div>
     </div>
-
+      <Toaster position='top-center' />
     </UserProfileConatiner>
   )
 }
@@ -165,10 +202,7 @@ const UserProfileConatiner = styled(MainNavBarContainer)`
     }
 `
 
-const Day = styled.div.attrs(props => ({
-  // Filter out the ispresent prop to avoid passing it to the DOM
-  ispresent: undefined,
-}))`
+const Day = styled.div`
 
 
     width: 40px;
@@ -177,13 +211,13 @@ const Day = styled.div.attrs(props => ({
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: ${(props) => (props.ispresent ? '#4caf50' : '#fff')};
-    color: ${(props) => (props.ispresent ? '#fff' : '#000')};
+    background-color: ${(props) => (props.$ispresent ? '#4caf50' : '#fff')};
+    color: ${(props) => (props.$ispresent ? '#fff' : '#000')};
     cursor: pointer;
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: ${(props) => (props.ispresent ? '#45a045' : '#e0e0e0')};
+        background-color: ${(props) => (props.$ispresent ? '#45a045' : '#e0e0e0')};
     }
         
 `
