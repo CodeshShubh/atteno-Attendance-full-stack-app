@@ -6,11 +6,19 @@ import { FaCalendarDays } from "react-icons/fa6";
 import { FaCodeBranch } from "react-icons/fa6";
 import { FcManager } from "react-icons/fc";
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 
 
 const MDashboard = () => {
     const navigate = useNavigate();
+
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() => {
+        setRefresh(prev => !prev); // Toggle state to force re-render
+    }, []);
+
 
      const TotalDriversHandler =(e)=>{
         e.preventDefault()

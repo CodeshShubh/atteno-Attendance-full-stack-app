@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { OrangeButton } from '../../components/Home/MHome';
 import axios from 'axios';
 import {server} from '../../redux/store'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, {Toaster} from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +10,12 @@ import { useNavigate } from "react-router-dom";
 const AddDrivers = () => {
 
   const navigate = useNavigate();
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
 
   const [formData, setFormData] = useState({
     name: '',

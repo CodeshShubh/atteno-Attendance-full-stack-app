@@ -2,18 +2,27 @@ import styled from "styled-components";
 import MultpleCards from "../admincomponents/MultpleCards";
 import {useSelector} from 'react-redux';
 import dayjs from 'dayjs';
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { AdminloadDrivers } from "../../redux/actions/AdminLoginAction";
+import {useDispatch} from 'react-redux';
 
 
 const TotalDrivers = () => {
 
     const {AdminUser} = useSelector(state=>state.AdminLogin);
     const Drivers  = AdminUser.getalldrivers
+    const dispatch = useDispatch();
+
 
     const today = dayjs().date(); // Today's date
     const currentMonth = dayjs().month() + 1; // Month is 0-indexed
     const currentYear = dayjs().year();
+
+    useEffect(() => {
+      dispatch(AdminloadDrivers()); //  action to fetch updated drivers
+  }, [dispatch]);
+
 
    
     // Count present and absent drivers
@@ -39,7 +48,7 @@ const TotalDrivers = () => {
       });
   
       return { presentCount, absentCount, driversWithStatus };
-    }, [Drivers, today, currentMonth, currentYear]);
+    }, [Drivers, today, currentMonth, currentYear ]);
 
   return (
     <TotalDriversContainer>
