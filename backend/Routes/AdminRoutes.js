@@ -13,7 +13,7 @@ const app = express.Router();
 app.post('/login', AdminLogin);
 
 // // route -  api/v1/admin/Addnewdriver
-app.post('/addnewdriver', isAdminAuthenticated, AddNewDriver);
+app.post('/addnewdriver', AddNewDriver);
 
 
 // // route -  api/v1/admin/fetch/drivers

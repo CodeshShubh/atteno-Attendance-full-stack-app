@@ -64,7 +64,7 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
 // Add New Driver
     export const AddNewDriver = catchAsyncErrror(async(req, res, next)=>{
 
-        const adminid = req.user._id;
+        // const adminid = req.user._id;
                 
         const {name, vehicle, mobileNumber, DLnumber, branchName   } = req.body; 
         

@@ -1,7 +1,61 @@
 import styled from "styled-components";
 import { OrangeButton } from '../../components/Home/MHome';
+import axios from 'axios';
+import {server} from '../../redux/store'
+import { useState } from "react";
+import toast, {Toaster} from 'react-hot-toast'
+import { useNavigate } from "react-router-dom";
+
 
 const AddDrivers = () => {
+
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    vehicle: '',
+    mobileNumber: '',
+    DLnumber: '',
+    branchName: ''
+  });
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${server}/admin/Addnewdriver`, formData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.data.success) {
+        toast.success("Driver added successfully!")
+        // Reset form or perform any other actions
+        setFormData({
+          name: '',
+          vehicle: '',
+          mobileNumber: '',
+          DLnumber: '',
+          branchName: ''
+        });
+        navigate('/totaldrivers')
+      }
+    } catch (error) {
+      console.error("Error adding driver:", error);
+      toast.error(error.response?.data?.message || "Failed to add driver");
+    }
+  };
+
+
   return (
     <AddDriversConatiner>
       <div className="top_heading">
@@ -10,18 +64,19 @@ const AddDrivers = () => {
       </div>
       
      <div className="form_Container">
-      <form>
-          <input type="text" name="branch" placeholder="Branch Name" />
-          <input type="text" name="driver" placeholder="Driver Name" />
-          <input type="text" name="vehicle" placeholder="Vehicle Number" />
-          <input type="tel" name="mobile" placeholder="Mobile Name" />
-          <input type="number" name="dl" placeholder="Last 4 digit of DL" />
-          <OrangeButton>Add Drivers</OrangeButton>
+      <form onSubmit={handleSubmit}>
+          <input type="text" name="branchName" placeholder="Branch Name" value={formData.branchName} onChange={handleChange} />
+          <input type="text" name="name" placeholder="Driver Name" value={formData.name} onChange={handleChange} />
+          <input type="text" name="vehicle" placeholder="Vehicle Number" value={formData.vehicle} onChange={handleChange} />
+          <input type="tel" name="mobileNumber" placeholder="Mobile Name" value={formData.mobileNumber} onChange={handleChange} />
+          <input type="number" name="DLnumber" placeholder="Last 4 digit of DL" value={formData.DLnumber} onChange={handleChange} />
+          <OrangeButton type="submit">Add Drivers</OrangeButton>
       </form>
      </div>
+     <Toaster position="top-center"/>
     </AddDriversConatiner>
   )
-}
+} 
 
 export default AddDrivers;
 
