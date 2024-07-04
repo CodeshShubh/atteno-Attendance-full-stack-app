@@ -3,9 +3,10 @@ import ErrorHandler from "../middlewares/errorHandler.js";
 import Admin from "../models/AdminSchema.js";
 import Driver from "../models/DriverSchema.js";
 import { AdminSendToken } from "../utils/AdminSendToken.js";
+import dayjs from 'dayjs';
 
 
-
+// Admin Registration
 export const AdminRegistration = catchAsyncErrror(async(req,res,next)=>{
     const {AdminUserId, Password} = req.body;
     if(!AdminUserId || !Password)
@@ -25,7 +26,7 @@ export const AdminRegistration = catchAsyncErrror(async(req,res,next)=>{
 });
 
 
-
+// Admin Login
 export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
    
     const {AdminUserId, Password} = req.body;
@@ -48,7 +49,7 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
     });
 
 
-
+// Get Admin Profile
     export const getAdminProfile = catchAsyncErrror(async (req, res, next) => {
         const  user  = await Admin.findById(req.user._id); // Extracting driverId from URL parameters
         if (!user) {
@@ -60,7 +61,7 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
     }); 
 
 
-
+// Add New Driver
     export const AddNewDriver = catchAsyncErrror(async(req, res, next)=>{
 
         const adminid = req.user._id;
@@ -91,7 +92,7 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
 
 
 
-
+// Get All Drivers
     export const getAllDrivers = catchAsyncErrror(async(req, res, next)=>{
     try {
         const allDrivers = await Driver.find();
@@ -106,3 +107,67 @@ export const AdminLogin = catchAsyncErrror(async(req, res, next)=>{
         });
     }
     })
+
+    // Get Driver By ID
+    export const getDriverById = catchAsyncErrror(async (req, res, next) => {
+        const { id } = req.params;
+    
+        const driver = await Driver.findById(id);
+    
+        if (!driver) {
+            return next(new ErrorHandler("Driver not found", 404));
+        }
+    
+        res.status(200).json({
+            success: true,
+            driver
+        });
+    });
+
+    
+    // Toggle Attendance
+   
+    export const markAttendance = catchAsyncErrror(async (req, res, next) => {
+        const { id } = req.params;
+        const { currentMonth, currentDay } = req.body;
+    
+        const driver = await Driver.findById(id);
+    
+        if (!driver) {
+            return next(new ErrorHandler("Driver not found", 404));
+        }
+    
+        const year = dayjs(currentMonth, 'YYYY-MM').year();
+        const month = dayjs(currentMonth, 'YYYY-MM').month() + 1; // month is 0-indexed
+        let yearRecord = driver.attendance.find(record => record.AttendanceRecords.some(r => r.Year === year));
+        if (!yearRecord) {
+            yearRecord = { AttendanceRecords: [{ Year: year, months: [] }] };
+            driver.attendance.push(yearRecord);
+        }
+    
+        let monthRecord = yearRecord.AttendanceRecords[0].months.find(m => m.name === month.toString());
+        if (!monthRecord) {
+            monthRecord = { name: month.toString(), days: [] };
+            yearRecord.AttendanceRecords[0].months.push(monthRecord);
+        }
+    
+        let dayRecord = monthRecord.days.find(d => d.day === currentDay);
+        if (!dayRecord) {
+            dayRecord = { day: currentDay, status: "present" };
+            monthRecord.days.push(dayRecord);
+        } else {
+            dayRecord.status = dayRecord.status === "present" ? "absent" : "present";
+        }
+    
+        await driver.save();
+    
+        res.status(200).json({
+            success: true,
+            message: `Attendance for ${currentMonth}-${currentDay} marked as ${dayRecord.status}`,
+            driver
+        });
+    });
+    
+    
+
+    

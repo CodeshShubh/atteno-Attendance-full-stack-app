@@ -1,5 +1,5 @@
 import express from 'express';
-import { AddNewDriver, AdminLogin, AdminRegistration, getAdminProfile, getAllDrivers } from '../Controllers/Admin.js';
+import { AddNewDriver, AdminLogin, AdminRegistration, getAdminProfile, getAllDrivers, getDriverById, markAttendance } from '../Controllers/Admin.js';
 import { isAdminAuthenticated } from '../middlewares/auth.js';
 
 
@@ -18,6 +18,14 @@ app.post('/addnewdriver', isAdminAuthenticated, AddNewDriver);
 
 // // route -  api/v1/admin/fetch/drivers
 app.get('/fetch/drivers', isAdminAuthenticated, getAllDrivers);
+
+// Route: /api/v1/admin/drivers/:id
+app.get('/drivers/:id', getDriverById);
+
+
+app.put('/drivers/:id/attendance', markAttendance);
+
+
 
 app.get('/getadminprofile', isAdminAuthenticated, getAdminProfile)
 

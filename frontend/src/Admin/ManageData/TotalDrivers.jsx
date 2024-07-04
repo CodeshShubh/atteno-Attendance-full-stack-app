@@ -3,6 +3,7 @@ import MultpleCards from "../admincomponents/MultpleCards";
 import {useSelector} from 'react-redux';
 import dayjs from 'dayjs';
 import { useMemo } from "react";
+import { Link } from "react-router-dom";
 
 
 const TotalDrivers = () => {
@@ -49,8 +50,10 @@ const TotalDrivers = () => {
            </div>
            {
             driversWithStatus.map((driver)=>(
+              <Link key={driver._id} to={`/drivers/${driver._id}`}>
                 <MultpleCards key={driver._id} name={driver.name} vehicle={driver.vehicle} isPresentToday={driver.isPresentToday}
                 />
+                </Link>
             ))
            }
     </TotalDriversContainer>

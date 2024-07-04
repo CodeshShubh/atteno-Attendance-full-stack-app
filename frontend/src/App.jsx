@@ -28,6 +28,7 @@ import Loader from './Layout/Loader/Loader';
 import { loadUser } from './redux/actions/driverAction';
 import ProtectedRoute from '../ProtectedRoute';
 import { AdminloadDrivers, getAdminProfile } from './redux/actions/AdminLoginAction';
+import AttendanceManipulation from './Admin/ManiPulate Data/AttendanceManipulation';
 
 
 
@@ -86,6 +87,7 @@ useEffect(()=>{
                   <Route path='/DriverAttendance' element={<Attendance/> }/>
                   <Route path='/DriverBranch' element={<DriverBranch/> }/>
                   <Route path='/AddDrivers' element={<AddDrivers/> }/>
+                  <Route path='/drivers/:id' element={<AttendanceManipulation /> }/>
 
                 </Routes>
                   </ErrorBoundary>
