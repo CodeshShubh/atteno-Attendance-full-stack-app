@@ -1,87 +1,39 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-const Branches = [
-    {
-        name: "Adhoc",
-        drivers: [
-            { id: 1, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 2, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 3, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 4, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 5, driver: "Ramesh", vehicle: "DL1MB0686" },
-        ]
-    },
-    {
-        name: "Amazon",
-        drivers: [
-            { id: 1, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 2, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 3, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 4, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 5, driver: "Ramesh", vehicle: "DL1MB0686" },
-        ]
-    },
-    {
-        name: "24x7",
-        drivers: [
-            { id: 1, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 2, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 3, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 4, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 5, driver: "Ramesh", vehicle: "DL1MB0686" },
-        ]
-    },
-    {
-        name: "FRC",
-        drivers: [
-            { id: 1, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 2, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 3, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 4, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 5, driver: "Ramesh", vehicle: "DL1MB0686" },
-        ]
-    },
-    {
-        name: "Flipkart",
-        drivers: [
-            { id: 1, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 2, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 3, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 4, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 5, driver: "Ramesh", vehicle: "DL1MB0686" },
-        ]
-    },
-    {
-        name: "Delhivery",
-        drivers: [
-            { id: 1, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 2, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 3, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 4, driver: "Ramesh", vehicle: "DL1MB0686" },
-            { id: 5, driver: "Ramesh", vehicle: "DL1MB0686" },
-        ]
-    }
-];
 
 const colors = ["red", "green", "blue", "yellow", "orange", "purple"];
 
 const DriverBranch = () => {
+    const { AdminUser } = useSelector((state) => state.AdminLogin);
+    const Drivers = AdminUser.getalldrivers;
+  
+      // Group drivers by branchName
+  const groupedDrivers = Drivers.reduce((acc, driver) => {
+    if (!acc[driver.branchName]) {
+      acc[driver.branchName] = [];
+    }
+    acc[driver.branchName].push(driver);
+    return acc;
+  }, {});
+
+
   return (
     <DriverBranchContainer>
-        {Branches.map((branch, index) => (
-            <BranchCard key={branch.name} color={colors[index % colors.length]}>
-                <h1>{branch.name}</h1>
-                {branch.drivers.map((driver) => (
-                    <p key={driver.id}>
-                        {driver.driver} - {driver.vehicle}
+        {Object.keys(groupedDrivers).map((branchName, index) => (
+            <BranchCard key={branchName} color={colors[index % colors.length]}>
+                <h1>{branchName}</h1>
+                {groupedDrivers[branchName].map((driver, idx) => (
+                    <p key={branchName}>
+                      {idx+1}.  {driver.name} - {driver.vehicle}
                     </p>
                 ))}
             </BranchCard>
         ))}
     </DriverBranchContainer>
   );
-}
+} 
 
 export default DriverBranch;
 
