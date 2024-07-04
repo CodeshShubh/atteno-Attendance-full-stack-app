@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const MultpleCards = ({id,name,vehicle}) => {
+const MultpleCards = ({id,name,vehicle, isPresentToday}) => {
   return (
-    <MultipleCardContainer>
+    <MultipleCardContainer $ispresenttoday={isPresentToday}>
             <p key={id}> {name} - {vehicle}</p>
     </MultipleCardContainer>
   )
@@ -13,7 +13,7 @@ export default MultpleCards;
 
 
 const MultipleCardContainer = styled.div`
-     background-color: green;
+     background-color: ${props => props.$ispresenttoday ? 'green' : 'red'};
      padding: 0.5rem;
      font-weight: 900;
      text-align: center;
