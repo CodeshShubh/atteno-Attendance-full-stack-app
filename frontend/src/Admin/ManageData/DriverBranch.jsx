@@ -6,6 +6,11 @@ import { useSelector } from "react-redux";
 const colors = ["red", "green", "blue", "yellow", "orange", "purple"];
 
 const DriverBranch = () => {
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
     const { AdminUser } = useSelector((state) => state.AdminLogin);
     const Drivers = AdminUser.getalldrivers;
   

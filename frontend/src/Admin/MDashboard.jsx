@@ -7,7 +7,8 @@ import { FaCodeBranch } from "react-icons/fa6";
 import { FcManager } from "react-icons/fc";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
+import { HiDotsVertical } from "react-icons/hi";
+import { OrangeButton } from '../components/Home/MHome';
 
 
 const MDashboard = () => {
@@ -18,7 +19,7 @@ const MDashboard = () => {
     useEffect(() => {
         setRefresh(prev => !prev); // Toggle state to force re-render
     }, []);
-
+ 
 
      const TotalDriversHandler =(e)=>{
         e.preventDefault()
@@ -50,8 +51,7 @@ const MDashboard = () => {
             <h1>Welcome , Shubhanshu </h1>
             <p>Select Button to Manage Driver's</p>
         </div>
-        <Navigationbtns onclick={TotalDriversHandler} btn ="Total Drivers" btncolor="red" icons={<ImTruck />}
-        />
+        <Navigationbtns onclick={TotalDriversHandler} btn ="Total Drivers" btncolor="red" icons={<ImTruck />}/>
         <Navigationbtns onclick={AttandenceHandler}  btn="Attendance" btncolor={"green"} icons={<FaCalendarDays />}/>
         <Navigationbtns onclick={DriverBranchHandler}  btn={"Driver Branch"} btncolor={"blue"} icons={<FaCodeBranch />} />
         <Navigationbtns onclick={AddDriversHandler}   btn={"Add Driver"} btncolor={"yellow"} icons={<FcManager />}/>

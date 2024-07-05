@@ -2,13 +2,18 @@ import styled from "styled-components";
 import MultpleCards from "../admincomponents/MultpleCards";
 import {useSelector} from 'react-redux';
 import dayjs from 'dayjs';
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { AdminloadDrivers } from "../../redux/actions/AdminLoginAction";
 import {useDispatch} from 'react-redux';
 
 
 const TotalDrivers = () => {
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
 
     const {AdminUser} = useSelector(state=>state.AdminLogin);
     const Drivers  = AdminUser.getalldrivers

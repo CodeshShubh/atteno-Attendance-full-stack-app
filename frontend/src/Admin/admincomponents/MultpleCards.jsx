@@ -1,6 +1,14 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const MultpleCards = ({id,name,vehicle, isPresentToday}) => {
+
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
   return (
     <MultipleCardContainer $ispresenttoday={isPresentToday}>
             <p key={id}> {name} - {vehicle}</p>

@@ -9,6 +9,12 @@ import toast, { Toaster } from 'react-hot-toast';
 
 
 const MUserProfile = () => {
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
   const dispatch = useDispatch();
   const { user, loading, error, message} = useSelector((state)=>state.driver);
   const data = user?.newDriver;

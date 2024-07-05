@@ -1,11 +1,17 @@
 import styled from 'styled-components';
-
 import VectorTruck from '../../assets/VectorTruck.jpg'
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 import {Link, useNavigate} from 'react-router-dom'
+import { useEffect, useState } from 'react';
 
 const MHome = () => {
   const navigate = useNavigate();
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
   return (
     <MainNavBarContainer>
       <div className='logo'>

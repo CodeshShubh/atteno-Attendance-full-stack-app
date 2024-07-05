@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { BackwardArrow } from '../admincomponents/btns';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,11 @@ import dayjs from 'dayjs';
 import * as XLSX from 'xlsx'; 
 
 const Attendance = () => {
+    const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
 
     const { AdminUser } = useSelector(state => state.AdminLogin);
     const Drivers = AdminUser.getalldrivers;

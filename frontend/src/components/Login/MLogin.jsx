@@ -2,12 +2,19 @@ import styled from "styled-components";
 import { FaGoogle } from "react-icons/fa";
 import loginImg from '../../assets/LoginImage.png';
 import { MainNavBarContainer, OrangeButton } from "../Home/MHome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { login } from "../../redux/actions/driverAction";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector} from 'react-redux';
 
 const MLogin = () => {
+
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
   const [UserId, setUserId] = useState("");
   const [Password, setPassword] = useState("");
   const navigate = useNavigate();

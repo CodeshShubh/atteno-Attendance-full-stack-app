@@ -2,11 +2,19 @@ import styled from 'styled-components'
 import { OrangeButton } from '../../components/Home/MHome'
 import { IoIosArrowDropright } from "react-icons/io";
 import { FaCircleArrowLeft } from "react-icons/fa6";
+import { useEffect, useState } from 'react';
 
 
 
 
 export const Navigationbtns =({btn, btncolor, icons, onclick})=>{
+
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() => {
+        setRefresh(prev => !prev); // Toggle state to force re-render
+    }, []);
+
     return(
         <Navbtns onClick={onclick} btncolor={btncolor}>
              <div className='icons'>

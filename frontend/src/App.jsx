@@ -1,8 +1,7 @@
 
 import {BrowserRouter as Router , Routes, Route} from 'react-router-dom'
 import {ChakraProvider} from '@chakra-ui/react'
-import { lazy, useEffect, Suspense } from 'react';
-// import  toast, { Toaster } from 'react-hot-toast';
+import { lazy, useEffect, Suspense, useState } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
 
 import './App.css'
@@ -29,30 +28,46 @@ import { loadUser } from './redux/actions/driverAction';
 import ProtectedRoute from '../ProtectedRoute';
 import { AdminloadDrivers, getAdminProfile } from './redux/actions/AdminLoginAction';
 import AttendanceManipulation from './Admin/ManiPulate Data/AttendanceManipulation';
+import NotFound from '../NotFound';
 
 
 
 function App() {
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    setRefresh(prev=>!prev)
+  }, [])
+  
+
+
+  const dispatch = useDispatch();
   // window.addEventListener('contextmenu', e => {
   //   e.preventDefault();
   // });
 
- const {isAuthenticated, message, error, loading} = useSelector((state)=>state.driver);
-const dispatch = useDispatch();
+ const {isAuthenticated, loading} = useSelector((state)=>state.driver);
+ const {AdminAuthenticated} = useSelector((state)=>state.AdminLogin);
           
-// useEffect(()=>{
-//   if(error){
-//     toast.error(error);
-//   }
-//   if(message){
-//     toast.success(message)
-//   }
-// },[dispatch, error, message])
+
 
 useEffect(()=>{
-    dispatch(loadUser());
+  const token = localStorage.getItem('token');
+    const adminToken = localStorage.getItem('adminToken');
+    if(token){
+      dispatch(loadUser());
+    }
+    if(adminToken){
     dispatch(getAdminProfile());
     dispatch(AdminloadDrivers());
+    }
+    if (token && adminToken){
+      dispatch(loadUser());
+      dispatch(getAdminProfile());
+      dispatch(AdminloadDrivers());
+    }
+    
 },[dispatch])
 
 
@@ -80,19 +95,24 @@ useEffect(()=>{
 
 
                         {/* for Admin dashboard */}
-                  <Route path='/adminlogin' element={<MAdminLogin/> }/>
-                  <Route path='/admindashboard' element={<MDashboard/> }/>
+                  <Route path='/adminlogin' element={<ProtectedRoute isAuthenticated={!AdminAuthenticated} redirectTo='/admindashboard'>
+                    <MAdminLogin/>
+                  </ProtectedRoute> }/>
+                  <Route path='/admindashboard' element={<ProtectedRoute isAuthenticated={AdminAuthenticated} redirectTo='/adminlogin'>
+                    <MDashboard/>
+                  </ProtectedRoute>}/>
                   {/* Manage Data */}
                   <Route path='/totaldrivers' element={<TotalDrivers/> }/>
                   <Route path='/DriverAttendance' element={<Attendance/> }/>
                   <Route path='/DriverBranch' element={<DriverBranch/> }/>
                   <Route path='/AddDrivers' element={<AddDrivers/> }/>
                   <Route path='/drivers/:id' element={<AttendanceManipulation /> }/>
+                  <Route path="*" element={<NotFound />} />
+
 
                 </Routes>
                   </ErrorBoundary>
               </Suspense>
-              {/* <Toaster position='top-center'/> */}
               </>
           )
          }

@@ -9,6 +9,12 @@ import toast, { Toaster } from 'react-hot-toast';
 
 
 const MAdminLogin = () => {
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+      setRefresh(prev => !prev); // Toggle state to force re-render
+  }, []);
  
 const {AdminLoading, AdminAuthenticated, AdminError, AdminMessage } = useSelector(state=>state.AdminLogin);
 
