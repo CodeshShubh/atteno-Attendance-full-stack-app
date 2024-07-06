@@ -53,21 +53,9 @@ function App() {
 
 
 useEffect(()=>{
-  const token = localStorage.getItem('token');
-    const adminToken = localStorage.getItem('adminToken');
-    if(token){
-      dispatch(loadUser());
-    }
-    if(adminToken){
+    dispatch(loadUser());
     dispatch(getAdminProfile());
     dispatch(AdminloadDrivers());
-    }
-    if (token && adminToken){
-      dispatch(loadUser());
-      dispatch(getAdminProfile());
-      dispatch(AdminloadDrivers());
-    }
-    
 },[dispatch])
 
 

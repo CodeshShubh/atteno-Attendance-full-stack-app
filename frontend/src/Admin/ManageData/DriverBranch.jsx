@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -13,7 +13,7 @@ const DriverBranch = () => {
   }, []);
     const { AdminUser } = useSelector((state) => state.AdminLogin);
     const Drivers = AdminUser.getalldrivers;
-  
+    console.log(Drivers);
       // Group drivers by branchName
   const groupedDrivers = Drivers.reduce((acc, driver) => {
     if (!acc[driver.branchName]) {

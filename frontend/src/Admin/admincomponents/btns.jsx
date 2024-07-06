@@ -16,7 +16,7 @@ export const Navigationbtns =({btn, btncolor, icons, onclick})=>{
     }, []);
 
     return(
-        <Navbtns onClick={onclick} btncolor={btncolor}>
+        <Navbtns onClick={onclick} $btncolor={btncolor}>
              <div className='icons'>
             {icons}  
            <div className='namesvg'>     
@@ -25,12 +25,12 @@ export const Navigationbtns =({btn, btncolor, icons, onclick})=>{
            </div>
              </div>  
             </Navbtns>
-    )
+    ) 
 }
 
 
 const  Navbtns = styled(OrangeButton)`
-background-color: ${(props) => props.btncolor || "default"};
+background-color: ${(props) => props.$btncolor || "default"};
 
 svg{
     font-weight: bold;
