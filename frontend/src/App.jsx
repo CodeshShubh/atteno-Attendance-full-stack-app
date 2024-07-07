@@ -90,11 +90,21 @@ useEffect(()=>{
                     <MDashboard/>
                   </ProtectedRoute>}/>
                   {/* Manage Data */}
-                  <Route path='/totaldrivers' element={<TotalDrivers/> }/>
-                  <Route path='/DriverAttendance' element={<Attendance/> }/>
-                  <Route path='/DriverBranch' element={<DriverBranch/> }/>
-                  <Route path='/AddDrivers' element={<AddDrivers/> }/>
-                  <Route path='/drivers/:id' element={<AttendanceManipulation /> }/>
+                  <Route path='/totaldrivers' element={<ProtectedRoute isAuthenticated={AdminAuthenticated}>
+                    <TotalDrivers/>
+                  </ProtectedRoute> }/>
+                  <Route path='/DriverAttendance' element={<ProtectedRoute isAuthenticated={AdminAuthenticated}>
+                    <Attendance/>
+                  </ProtectedRoute> }/>
+                  <Route path='/DriverBranch' element={<ProtectedRoute isAuthenticated={AdminAuthenticated}>
+                    <DriverBranch/>
+                  </ProtectedRoute> }/>
+                  <Route path='/AddDrivers' element={<ProtectedRoute isAuthenticated={AdminAuthenticated}>
+                    <AddDrivers/>
+                  </ProtectedRoute> }/>
+                  <Route path='/drivers/:id' element={<ProtectedRoute isAuthenticated={AdminAuthenticated}>
+                    <AttendanceManipulation />
+                  </ProtectedRoute> }/>
                   <Route path="*" element={<NotFound />} />
 
 
