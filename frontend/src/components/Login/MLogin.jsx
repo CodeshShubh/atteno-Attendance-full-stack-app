@@ -6,15 +6,18 @@ import { useEffect, useState } from "react";
 import { login } from "../../redux/actions/driverAction";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector} from 'react-redux';
+import { BackwardArrow } from "../../Admin/admincomponents/btns";
+
 
 const MLogin = () => {
 
-
+ 
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
       setRefresh(prev => !prev); // Toggle state to force re-render
   }, []);
+
   const [UserId, setUserId] = useState("");
   const [Password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -25,11 +28,19 @@ const MLogin = () => {
         dispatch(login({mobileNumber:UserId, DLnumber:Password}));
         navigate("/user")
   };
+  const navigation = useNavigate();
+  const BackwordArrowHandler =(e)=>{
+    e.preventDefault()
+      navigation('/')
+  }
 
    const {loading} = useSelector(state=>state.driver)
    
   return (
     <LoginPageContainer>
+      <div className='backwordArrow'>
+               <BackwardArrow onClick={BackwordArrowHandler} />
+      </div>
       <div className="TopHeading">
         <h1>Welcome Back</h1>
         <p>Please log in to continue.</p>
@@ -70,6 +81,9 @@ const LoginPageContainer = styled(MainNavBarContainer)`
   background-color: whitesmoke;
   max-width: 100%; /* Adjust to fit within the viewport */
   overflow: hidden;
+  .backwordArrow{
+    margin-top: 0.5rem;
+  }
   .TopHeading {
     text-align: center;
     margin-top: 2rem;

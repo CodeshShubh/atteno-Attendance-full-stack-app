@@ -15,7 +15,7 @@ const Attendance = () => {
   }, []);
 
     const { AdminUser } = useSelector(state => state.AdminLogin);
-    const Drivers = AdminUser.getalldrivers;
+    const Drivers = AdminUser?.getalldrivers || [];
 
      
   const today = dayjs().date(); // Today's date

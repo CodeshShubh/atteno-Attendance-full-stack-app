@@ -10,13 +10,17 @@ import {useDispatch} from 'react-redux';
 
 const TotalDrivers = () => {
   const [refresh, setRefresh] = useState(false);
+  const [presentCount, setPresentCount] = useState(0);
+  const [absentCount, setAbsentCount] = useState(0);
+  const [driversWithStatus, setDriversWithStatus] = useState([]);
+
 
   useEffect(() => {
       setRefresh(prev => !prev); // Toggle state to force re-render
   }, []);
 
     const {AdminUser} = useSelector(state=>state.AdminLogin);
-    const Drivers  = AdminUser.getalldrivers
+    const Drivers  = AdminUser?.getalldrivers || [] ;
     const dispatch = useDispatch();
 
 
@@ -31,7 +35,7 @@ const TotalDrivers = () => {
 
    
     // Count present and absent drivers
-    const { presentCount, absentCount, driversWithStatus } = useMemo(() => {
+    useEffect(() => {
       let presentCount = 0;
       let absentCount = 0;
   
@@ -52,7 +56,10 @@ const TotalDrivers = () => {
         };
       });
   
-      return { presentCount, absentCount, driversWithStatus };
+    setPresentCount(presentCount);
+    setAbsentCount(absentCount);
+    setDriversWithStatus(driversWithStatus);
+
     }, [Drivers, today, currentMonth, currentYear ]);
 
   return (

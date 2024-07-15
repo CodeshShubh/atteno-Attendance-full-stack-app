@@ -61,6 +61,6 @@ svg{
 // }
 
 export const BackwardArrow =({onClick})=>{
-    return <FaCircleArrowLeft onClick={onClick} />
+    return <FaCircleArrowLeft onClick={onClick} style={{ fontSize: '26px'}} />
 
 }
