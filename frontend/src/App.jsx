@@ -5,21 +5,21 @@ import { lazy, useEffect, Suspense, useState } from 'react';
 import ErrorBoundary from '../ErrorBoundary';
 
 import './App.css'
-const MLogin = lazy(()=>import('./components/Login/MLogin'))
-const MHome = lazy(()=>import('./components/Home/MHome'))
-const MUserProfile = lazy(()=>import('./components/User/MUserProfile'))
+const MLogin = lazy(()=>import('./components/Login/MLogin'));
+const MHome = lazy(()=>import('./components/Home/MHome'));
+const MUserProfile = lazy(()=>import('./components/User/MUserProfile'));
 
 
 //Admin Routes
-const MAdminLogin = lazy(()=>import('./Admin/MAdminLogin'))
-const MDashboard = lazy(()=>import('./Admin/MDashboard'))
+const MAdminLogin = lazy(()=>import('./Admin/MAdminLogin'));
+const MDashboard = lazy(()=>import('./Admin/MDashboard'));
 
 
 //manage Data
-const TotalDrivers = lazy(()=>import('./Admin/ManageData/TotalDrivers'))
-const Attendance = lazy(()=>import('./Admin/ManageData/Attendance'))
-const DriverBranch = lazy(()=>import('./Admin/ManageData/DriverBranch'))
-const AddDrivers = lazy(()=>import('./Admin/ManageData/AddDrivers'))
+const TotalDrivers = lazy(()=>import('./Admin/ManageData/TotalDrivers'));
+const Attendance = lazy(()=>import('./Admin/ManageData/Attendance'));
+const DriverBranch = lazy(()=>import('./Admin/ManageData/DriverBranch'));
+const AddDrivers = lazy(()=>import('./Admin/ManageData/AddDrivers'));
 
 
 import { useDispatch, useSelector } from 'react-redux';

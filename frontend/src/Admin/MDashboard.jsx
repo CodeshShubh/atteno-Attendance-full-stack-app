@@ -7,14 +7,17 @@ import { FaCodeBranch } from "react-icons/fa6";
 import { FcManager } from "react-icons/fc";
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { HiDotsVertical } from "react-icons/hi";
-import { OrangeButton } from '../components/Home/MHome';
+import { useSelector } from 'react-redux';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const MDashboard = () => {
     const navigate = useNavigate();
 
     const [refresh, setRefresh] = useState(false);
+
+    const { AdminAuthenticated, AdminError, AdminMessage } = useSelector(state=>state.AdminLogin);
+
 
     useEffect(() => {
         setRefresh(prev => !prev); // Toggle state to force re-render
@@ -42,6 +45,11 @@ const MDashboard = () => {
      }
 
      
+     useEffect(()=>{
+        if(AdminMessage){
+          toast.success(AdminMessage)
+        }
+      },[AdminMessage ])
         
 
 
@@ -55,6 +63,7 @@ const MDashboard = () => {
         <Navigationbtns onclick={AttandenceHandler}  btn="Attendance" btncolor={"green"} icons={<FaCalendarDays />}/>
         <Navigationbtns onclick={DriverBranchHandler}  btn={"Driver Branch"} btncolor={"blue"} icons={<FaCodeBranch />} />
         <Navigationbtns onclick={AddDriversHandler}   btn={"Add Driver"} btncolor={"yellow"} icons={<FcManager />}/>
+        <Toaster position='top-center'/>
     </DashboardConatiner>
   )
 }

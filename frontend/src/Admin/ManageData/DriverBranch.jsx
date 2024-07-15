@@ -12,7 +12,7 @@ const DriverBranch = () => {
       setRefresh(prev => !prev); // Toggle state to force re-render
   }, []);
     const { AdminUser } = useSelector((state) => state.AdminLogin);
-    const Drivers = AdminUser.getalldrivers;
+    const Drivers = AdminUser?.getalldrivers || [];
     console.log(Drivers);
       // Group drivers by branchName
   const groupedDrivers = Drivers.reduce((acc, driver) => {

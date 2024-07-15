@@ -15,10 +15,14 @@ const MUserProfile = () => {
   useEffect(() => {
       setRefresh(prev => !prev); // Toggle state to force re-render
   }, []);
+
+
   const dispatch = useDispatch();
-  const { user, loading, error, message} = useSelector((state)=>state.driver);
+  const { user, loading, message} = useSelector((state)=>state.driver);
   const data = user?.newDriver;
   const AttendanceArray = user?.newDriver?.attendance;
+
+
 const [currentDate, setCurrentDate] = useState(dayjs());
 const [attendanceData, setAttendanceData] = useState([]);
 
@@ -48,13 +52,10 @@ const [attendanceData, setAttendanceData] = useState([]);
   }, [AttendanceArray, currentDate]);
 
   useEffect(()=>{
-       if(error){
-    toast.error(error);
-  }
   if(message){
     toast.success(message);
   }
-  },[dispatch, error, message])
+  },[dispatch, message])
   
 
   const handleMarkPresent = (e) => {

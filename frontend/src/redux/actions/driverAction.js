@@ -34,7 +34,7 @@ export const loadUser = ()=>async (dispatch)=>{
      dispatch(setUser(data));
      dispatch(setAuthenticated(true));
     } catch (error) {
-     dispatch(setError(error.response.data.message));
+     dispatch(setError(error.response.data.message)); 
     } finally{
      dispatch(setLoading(false));
     }

@@ -16,7 +16,7 @@ const MAdminLogin = () => {
       setRefresh(prev => !prev); // Toggle state to force re-render
   }, []);
  
-const {AdminLoading, AdminAuthenticated, AdminError, AdminMessage } = useSelector(state=>state.AdminLogin);
+const {AdminLoading, } = useSelector(state=>state.AdminLogin);  //AdminAuthenticated, AdminError, AdminMessage 
 
   const [AdminUserId, setAdminUserId] = useState("");
 const [Password, setPassword] = useState("");
@@ -28,17 +28,17 @@ const AdminLoginHandler =(e)=>{
    dispatch(AdminLogin({AdminUserId, Password}));
 }
 
-useEffect(()=>{
-  if(AdminAuthenticated){
-    navigate('/admindashboard')
-  }
-  if(AdminError){
-    toast.error(AdminError)
-  }
-  if(AdminMessage){
-    toast.success(AdminMessage)
-  }
-},[ dispatch, AdminError, AdminMessage ])
+// useEffect(()=>{
+//   if(AdminAuthenticated){
+//     navigate('/admindashboard')
+//   }
+//   if(AdminError){
+//     toast.error(AdminError)
+//   }
+//   if(AdminMessage){
+//     toast.success(AdminMessage)
+//   }
+// },[ dispatch, AdminError, AdminMessage ])
 
   return (
     <AdminLoginContainer>
