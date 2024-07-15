@@ -25,7 +25,7 @@ const Attendance = () => {
       const navigation = useNavigate();
     const BackwordArrowHandler =(e)=>{
       e.preventDefault()
-        navigation('/admindashboard')
+        navigation('/admindashboard', { replace: true })
     }
 
     const driversWithStatus = useMemo(() => {
