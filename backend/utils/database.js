@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 export const connectDB = async()=>{
 
-    await mongoose.connect("mongodb+srv://shubhanshusaadhiyaan:mack2010m@cluster0.ojpi4af.mongodb.net/" ,{
+    await mongoose.connect(process.env.MONGO_URI ,{
         dbName : "Atteno"
     })
     .then((c)=>console.log(`DB Connected to ${c.connection.host}`))
